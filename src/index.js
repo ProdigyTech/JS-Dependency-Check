@@ -16,3 +16,6 @@ const report = await checkDependencies({
   dependencies,
   devDependencies,
 });
+
+
+console.log(report)
