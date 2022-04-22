@@ -18,7 +18,7 @@ const processDependencies = async (dep) => {
       const data = await checkDependencyInNPMRegistry({
         package: current.package,
       });
-      const report = await generateReport(data);
+      const report = await generateReport(data, current);
       return data;
     }, []);
 };
@@ -30,9 +30,29 @@ const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
   return { versionTimeline: time, tags };
 };
 
-const generateReport = async () => {
+const generateReport = async ({ versionTimeline, tags }, currentPackage) => {
   return new Promise((resolve, reject) => {
     try {
+      const getDefinedVersion = () => {
+        if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
+          const v = currentPackage.version.split("");
+          const [throwAway, ...rest] = v;
+          return rest.join("");
+        } else {
+          return currentPackage.version;
+        }
+      };
+
+      const definedVersion = getDefinedVersion();
+
+      const { latest } = tags;
+
+      if (definedVersion !== latest) {
+        // return {
+        //     package: {...currentPackage}
+        // }
+      } else {
+      }
     } catch (e) {
       reject(e);
     }
