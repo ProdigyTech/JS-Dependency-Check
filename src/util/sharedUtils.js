@@ -64,7 +64,7 @@ const generateTableFromDepResult = (dep, type) => {
   const template = dep.length
     ? `
                     <h2>${type}</h2>
-                <table id="result-table-${type}">
+                <table id="result-table-${type} style=width:100%>
                     <thead>
                         <tr>
                         <td>Package</td>
