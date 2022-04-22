@@ -27,3 +27,4 @@
 - CI pipeline for better deploys 
 - GH Tags for releases  
 - Release v1.0.0
+- Tests 
