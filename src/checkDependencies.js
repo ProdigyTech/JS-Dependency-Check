@@ -12,7 +12,10 @@ export const checkDependencies = async ({
   devDependencies = [],
   dependencies = [],
 }) => {
-  const whiteList = whitelistedDependencies.length > 0 ?whitelistedDependencies .split(",") : [];
+  const whiteList =
+    whitelistedDependencies && whitelistedDependencies.length > 0
+      ? whitelistedDependencies.split(",")
+      : [];
 
   const peerDependenciesResult = await processDependencies(
     peerDependencies,
