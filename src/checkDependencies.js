@@ -1,7 +1,9 @@
 import axios from "axios";
+import semverGte from "semver/functions/gte.js";
+
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
-const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST;
+const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST || [];
 
 const filterDependencies = (whiteList, dep) => {
   return dep.filter((d) => !whiteList.includes(d.package));
@@ -13,7 +15,7 @@ export const checkDependencies = async ({
   dependencies = [],
 }) => {
   const whiteList =
-    whitelistedDependencies && whitelistedDependencies.length > 0
+    whitelistedDependencies.length > 0
       ? whitelistedDependencies.split(",")
       : [];
 
@@ -36,19 +38,18 @@ export const checkDependencies = async ({
 
 const processDependencies = async (dep, whiteList) => {
   try {
-      const filteredDeps = filterDependencies(whiteList, dep)
-    
-      const processedData = await Promise.all(
-        filteredDeps.map(async (current) => {
-          const data = await checkDependencyInNPMRegistry({
-            package: current.package,
-          });
-          const report = await generateReport(data, current);
-          return report;
-        })
-      );
-      return processedData;
-    
+    const filteredDeps = filterDependencies(whiteList, dep);
+
+    const processedData = await Promise.all(
+      filteredDeps.map(async (current) => {
+        const data = await checkDependencyInNPMRegistry({
+          package: current.package,
+        });
+        const report = await generateReport(data, current);
+        return report;
+      })
+    );
+    return processedData;
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -100,7 +101,9 @@ const generateReport = async ({ versionTimeline, tags }, currentPackage) => {
 
       const { latest } = tags;
       let versionInfo = {};
-      if (definedVersion !== latest) {
+
+      
+      if (!semverGte(definedVersion, latest)) {
         versionInfo = generateVersionObject({
           name: currentPackage.package,
           versionTimeline,

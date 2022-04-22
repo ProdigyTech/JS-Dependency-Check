@@ -1,5 +1,7 @@
 import path from 'path'
 import { promises as fs } from "fs";
+import semverGte from "semver/functions/gte.js";
+
 
 export const readFile = async ({ path, encoding, ...rest }) => {
   try {
@@ -30,7 +32,7 @@ const STATUS_UP_TO_DATE = "UP TO DATE";
 const STATUS_OUTDATED = "OUTDATED"
 
 const generateStatusString = (latest, current) => {
-  if (latest >= current) {
+  if (semverGte(current, latest)) {
     return STATUS_UP_TO_DATE;
   } else {
     return STATUS_OUTDATED;
