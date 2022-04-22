@@ -6,6 +6,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "app-root-path": "^3.0.0"
+    "app-root-path": "^3.0.0",
+    "axios": "^0.26.1"
+  },
+  "scripts": {
+    "start": "node src/index.js"
   }
 }
