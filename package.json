@@ -1,5 +1,5 @@
 {
-  "name": "@ProdigyTech/JS-Dependency-Check",
+  "name": "@prodigytech/js-dependency-check",
   "version": "0.0.1-alpha",
   "description": "A utility that checks a projects dependencies and returns a report of the which dependencies are out of date, deprecated, or up to date",
   "main": "index.js",
