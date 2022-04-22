@@ -5,11 +5,28 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "bin": {
+    "dependency-check": "dist/bundle.js"
+  },
   "dependencies": {
     "app-root-path": "^3.0.0",
     "axios": "^0.26.1"
   },
+  "devDependencies": {
+    "rollup-plugin-terser": "^7.0.2",
+    "semantic-release": "^19.0.2"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "development",
+        "prerelease": true
+      }
+    ]
+  },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "yarn build && node dist/bundle.js",
+    "build": "rollup -c"
   }
 }

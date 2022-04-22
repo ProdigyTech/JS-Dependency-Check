@@ -1,6 +1,6 @@
-import { readPackageJson } from "./readPackage.js";
-import { checkDependencies } from "./checkDependencies.js";
-import { generateReportFromRawData } from "./util/sharedUtils.js";
+import { readPackageJson } from "../src/readPackage.js";
+import { checkDependencies } from "../src/checkDependencies.js";
+import { generateReportFromRawData, writeReport  } from "../src/util/sharedUtils.js";
 
 import appRoot from "app-root-path";
 global.__basedir = appRoot.path;
@@ -18,4 +18,8 @@ const rawData = await checkDependencies({
   devDependencies,
 });
 
-const report = generateReportFromRawData(rawData);
+const htmlReport =  generateReportFromRawData(rawData);
+await writeReport(htmlReport)
+
+
+
