@@ -1,0 +1,11 @@
+{
+  "name": "js_dep_check",
+  "version": "1.0.0",
+  "description": "A utility that checks a projects dependencies and returns a report of the which dependencies are out of date, deprecated, or up to date",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "app-root-path": "^3.0.0"
+  }
+}
