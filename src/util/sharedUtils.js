@@ -1,7 +1,6 @@
-import path from 'path'
+import path from "path";
 import { promises as fs } from "fs";
 import semverGte from "semver/functions/gte.js";
-
 
 export const readFile = async ({ path, encoding, ...rest }) => {
   try {
@@ -29,7 +28,7 @@ export const transformDependencyObject = (dep = {}) => {
 };
 
 const STATUS_UP_TO_DATE = "UP TO DATE";
-const STATUS_OUTDATED = "OUTDATED"
+const STATUS_OUTDATED = "OUTDATED";
 
 const generateStatusString = (latest, current) => {
   if (semverGte(current, latest)) {
@@ -40,6 +39,7 @@ const generateStatusString = (latest, current) => {
 };
 
 const generateTableFromDepResult = (dep, type) => {
+  let outdated_counter = 0;
   const template = `
                     <h2>${type}</h2>
                 <table id="result-table-${type}">
@@ -49,18 +49,23 @@ const generateTableFromDepResult = (dep, type) => {
                         <td>Current Version</td>
                         <td>Latest Version</td>
                         <td>Status</td>
+                        <td> Upgrade Type </td>
                         </tr>
                     </thead>
                     <tbody>
-                       ${dep.map(({ package: depPackage }) => {
-                         const { name, latest, current } = depPackage;
+                       ${dep
+                         .map(({ package: depPackage }) => {
+                           const { name, latest, current, upgradeType } =
+                             depPackage;
 
-                         const status = generateStatusString(
-                           latest.version,
-                           current.version
-                         );
+                           const status = generateStatusString(
+                             latest.version,
+                             current.version
+                           );
 
-                        return `<tr>
+                           status === STATUS_OUTDATED && outdated_counter++;
+
+                           return `<tr>
                         <td>${name}</td>
                         <td> ${current.version} </td>
                         <td>${latest.version} </td>
@@ -68,12 +73,15 @@ const generateTableFromDepResult = (dep, type) => {
                           status === STATUS_OUTDATED
                             ? "background-color:red"
                             : "background-color:green"
-                        }>${status}</td></tr>`;
-                       }).join("")}
+                        }>${status}</td>
+                        <td> ${upgradeType} </td>
+                        </tr>`;
+                         })
+                         .join("")}
                     </tbody>
                     </table>`;
 
-  return template;
+  return { template, outdated_counter };
 };
 
 export const generateReportFromRawData = ({
@@ -81,24 +89,40 @@ export const generateReportFromRawData = ({
   devDependenciesResult,
   dependenciesResult,
 }) => {
-  const depTable = generateTableFromDepResult(
-    dependenciesResult,
-    "Dependencies"
-  );
-  const devTable = generateTableFromDepResult(
-    devDependenciesResult,
-    "Dev Dependencies"
-  );
-  const peerTable = generateTableFromDepResult(
-    peerDependenciesResult,
-    "Peer Dependencies"
-  );
-  
+  const { template: depTable, outdated_counter: depOutdatedCounter } =
+    generateTableFromDepResult(dependenciesResult, "Dependencies");
+
+  const { template: devTable, outdated_counter: devTableOutdatedCounter } =
+    generateTableFromDepResult(devDependenciesResult, "Dev Dependencies");
+  const { template: peerTable, outdated_counter: peerTableOutdatedCounter } =
+    generateTableFromDepResult(peerDependenciesResult, "Peer Dependencies");
+
+  const dependencyString = () => {
+    const totalOutdated =
+      devTableOutdatedCounter + peerTableOutdatedCounter + depOutdatedCounter;
+
+    if (totalOutdated == 0) {
+      return `There are ${totalOutdated} Packages that need to be updated. Woohoo! 🎉`;
+    }
+    if (totalOutdated == 1) {
+      return `There is ${totalOutdated} Package that needs to be updated - Not bad! `;
+    }
+
+    if (totalOutdated > 1 && totalOutdated < 10) {
+      return `There are  ${totalOutdated} Packages that need to be updated`;
+    }
+
+    if (totalOutdated >= 10) {
+      return `Ouch... There are ${totalOutdated} Packages that need to be updated 🙈 Good Luck! `;
+    }
+  };
+
   return `
         <html>
         <title> Dependency Check -- Report </title>
         <body>
         <h1> Results Below: </h1>
+        <h3>${dependencyString()} </h3>
         <div class="dep-table">
                 ${depTable}
         </div>
@@ -112,13 +136,12 @@ export const generateReportFromRawData = ({
     `;
 };
 
-
 export const writeReport = async (html) => {
-    try {
-    const p = path.join(__basedir, 'dependency-status-report.html');
-    await fs.writeFile(p, html)
-    console.log(`Wrote report to ${p}`)
-    }catch(e) {
-        console.error(e)
-    }
-}
+  try {
+    const p = path.join(__basedir, "dependency-status-report.html");
+    await fs.writeFile(p, html);
+    console.log(`Wrote report to ${p}`);
+  } catch (e) {
+    console.error(e);
+  }
+};

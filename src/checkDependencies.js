@@ -1,12 +1,14 @@
 import axios from "axios";
 import semverGte from "semver/functions/gte.js";
-
+import diff from 'semver/functions/diff.js'
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
 const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST || [];
 
 const filterDependencies = (whiteList, dep) => {
-  return dep.filter((d) => !whiteList.includes(d.package));
+  return dep.filter((d) => {
+    return !whiteList.includes(d.package);
+  });
 };
 
 export const checkDependencies = async ({
@@ -39,7 +41,6 @@ export const checkDependencies = async ({
 const processDependencies = async (dep, whiteList) => {
   try {
     const filteredDeps = filterDependencies(whiteList, dep);
-
     const processedData = await Promise.all(
       filteredDeps.map(async (current) => {
         const data = await checkDependencyInNPMRegistry({
@@ -80,6 +81,7 @@ const generateVersionObject = ({
         version: definedVersion,
         releaseDate: versionTimeline[definedVersion],
       },
+      upgradeType: diff(definedVersion, (latest || definedVersion)) || 'N/A'
     },
   };
 };
@@ -102,7 +104,6 @@ const generateReport = async ({ versionTimeline, tags }, currentPackage) => {
       const { latest } = tags;
       let versionInfo = {};
 
-      
       if (!semverGte(definedVersion, latest)) {
         versionInfo = generateVersionObject({
           name: currentPackage.package,
