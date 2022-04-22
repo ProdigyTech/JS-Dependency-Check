@@ -1,36 +1,51 @@
 import axios from "axios";
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
+const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST;
+
+const filterDependencies = (whiteList, dep) => {
+  return dep.filter((d) => !whiteList.includes(d.package));
+};
 
 export const checkDependencies = async ({
   peerDependencies = [],
   devDependencies = [],
   dependencies = [],
 }) => {
-  const peerDependenciesResult = await processDependencies(peerDependencies);
-  const devDependenciesResult = await processDependencies(devDependencies);
-  const dependenciesResult = await processDependencies(dependencies);
+  const whiteList = whitelistedDependencies.split(",");
+
+  const peerDependenciesResult = await processDependencies(
+    peerDependencies,
+    whiteList
+  );
+  const devDependenciesResult = await processDependencies(
+    devDependencies,
+    whiteList
+  );
+  const dependenciesResult = await processDependencies(dependencies, whiteList);
 
   return {
     peerDependenciesResult,
     devDependenciesResult,
-    dependenciesResult
-  }
+    dependenciesResult,
+  };
 };
 
-const processDependencies = async (dep) => {
+const processDependencies = async (dep, whiteList) => {
   try {
-    const processedData = await Promise.all(
-      dep.map(async (current) => {
-        const data = await checkDependencyInNPMRegistry({
-          package: current.package,
-        });
-        const report = await generateReport(data, current);
-        return report;
-      })
-    );
-
-    return processedData;
+      const filteredDeps = filterDependencies(whiteList, dep)
+    
+      const processedData = await Promise.all(
+        filteredDeps.map(async (current) => {
+          const data = await checkDependencyInNPMRegistry({
+            package: current.package,
+          });
+          const report = await generateReport(data, current);
+          return report;
+        })
+      );
+      return processedData;
+    
   } catch (e) {
     console.error(e);
     process.exit(1);
