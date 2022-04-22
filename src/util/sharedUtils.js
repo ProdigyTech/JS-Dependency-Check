@@ -169,6 +169,10 @@ export const generateReportFromRawData = ({
         border-collapse: collapse;
         width: 100%;
         }
+        
+        table {
+            width:100%;
+        }
 
          td, th {
         border: 1px solid #ddd;
