@@ -100,7 +100,6 @@ const generateReport = async ({ versionTimeline, tags }, currentPackage) => {
     } catch (e) {
       console.warn(e);
       reject(e);
-      process.exit(1);
     }
   });
 };

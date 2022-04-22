@@ -5,6 +5,8 @@ import appRoot from "app-root-path";
 global.__basedir = appRoot.path;
 
 
+//TODO allow package whitelists
+
 const dependenciesObject = await readPackageJson();
 
 const { peerDependencies, dependencies, devDependencies, repoInfo } =
@@ -17,5 +19,7 @@ const report = await checkDependencies({
   devDependencies,
 });
 
+
+//todo format this and make it pretty 
 
 console.log(report)
