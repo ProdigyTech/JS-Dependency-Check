@@ -1,10 +1,14 @@
 {
-  "name": "js_dep_check",
+  "name": "@ProdigyTech/JS-Dependency-Check",
   "version": "0.0.1-alpha",
   "description": "A utility that checks a projects dependencies and returns a report of the which dependencies are out of date, deprecated, or up to date",
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProdigyTech/JS-Dependency-Check.git"
+  },
   "bin": {
     "dependency-check": "dist/bundle.js"
   },
