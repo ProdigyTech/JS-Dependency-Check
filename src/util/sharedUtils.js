@@ -39,8 +39,27 @@ const generateStatusString = (latest, current) => {
 };
 
 const generateTableFromDepResult = (dep, type) => {
+  const getStatusBgColor = (UPGRADE_TYPE) => {
+    if (UPGRADE_TYPE !== "N/A") {
+      switch (UPGRADE_TYPE) {
+        case "PATCH":
+          return "background-color:yellowgreen";
+        case "PREPATCH":
+        case "PREMINOR":
+        case "MINOR":
+          return "background-color:yellow";
+        case "PRERELEASE":
+        case "MAJOR":
+        case "PREMAJOR":
+          return "background-color:red";
+        default:
+          return "background-color:red";
+      }
+    } else {
+      return "background-color:green";
+    }
+  };
 
- 
   let outdated_counter = 0;
   const template = dep.length
     ? `
@@ -90,11 +109,9 @@ const generateTableFromDepResult = (dep, type) => {
                         <td>${currentVersionDate}</td>
                         <td>${latest.version} </td>
                          <td>${latestVersionReleaseDate}</td>
-                        <td style=${
-                          status === STATUS_OUTDATED
-                            ? "background-color:red"
-                            : "background-color:green"
-                        }>${status}</td>
+                        <td style=${getStatusBgColor(
+                          upgradeType.toUpperCase()
+                        )}>${status}</td>
                         <td> ${upgradeType.toUpperCase()} </td>
                         <td> <a href=${registry_url} target="_blank"> ${registry_url} </a> </td>
                         <td> <a href=${npm_url} target="_blank"> ${npm_url} </a> </td>
