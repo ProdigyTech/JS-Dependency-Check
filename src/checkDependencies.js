@@ -3,6 +3,7 @@ import semverGte from "semver/functions/gte.js";
 import diff from 'semver/functions/diff.js'
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
+const NPM_PACKAGE_URL = "https://www.npmjs.com/package";
 const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST || [];
 
 const filterDependencies = (whiteList, dep) => {
@@ -73,6 +74,8 @@ const generateVersionObject = ({
   return {
     package: {
       name,
+      registry_url: `${NPM_REGISTRY_URL}/${name}`,
+      npm_url: `${NPM_PACKAGE_URL}/${name}`,
       latest: {
         version: latest || definedVersion,
         releaseDate: versionTimeline[latest] || versionTimeline[definedVersion],
@@ -81,7 +84,7 @@ const generateVersionObject = ({
         version: definedVersion,
         releaseDate: versionTimeline[definedVersion],
       },
-      upgradeType: diff(definedVersion, (latest || definedVersion)) || 'N/A'
+      upgradeType: diff(definedVersion, latest || definedVersion) || "N/A",
     },
   };
 };

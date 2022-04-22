@@ -39,24 +39,37 @@ const generateStatusString = (latest, current) => {
 };
 
 const generateTableFromDepResult = (dep, type) => {
+
+ 
   let outdated_counter = 0;
-  const template = `
+  const template = dep.length
+    ? `
                     <h2>${type}</h2>
                 <table id="result-table-${type}">
                     <thead>
                         <tr>
-                        <td>Dependency Name</td>
+                        <td>Package</td>
                         <td>Current Version</td>
+                        <td>Current Release Date</td>
                         <td>Latest Version</td>
+                        <td>Latest Version Release Date</td>
                         <td>Status</td>
                         <td> Upgrade Type </td>
+                        <td> Link to package in registry </td>
+                        <td> Link to package on NPM </td>
                         </tr>
                     </thead>
                     <tbody>
                        ${dep
                          .map(({ package: depPackage }) => {
-                           const { name, latest, current, upgradeType } =
-                             depPackage;
+                           const {
+                             name,
+                             registry_url,
+                             npm_url,
+                             latest,
+                             current,
+                             upgradeType,
+                           } = depPackage;
 
                            const status = generateStatusString(
                              latest.version,
@@ -65,21 +78,32 @@ const generateTableFromDepResult = (dep, type) => {
 
                            status === STATUS_OUTDATED && outdated_counter++;
 
+                           const currentVersionDate = new Date(
+                             current.releaseDate
+                           ).toLocaleDateString();
+                           const latestVersionReleaseDate = new Date(
+                             latest.releaseDate
+                           ).toLocaleDateString();
                            return `<tr>
                         <td>${name}</td>
                         <td> ${current.version} </td>
+                        <td>${currentVersionDate}</td>
                         <td>${latest.version} </td>
+                         <td>${latestVersionReleaseDate}</td>
                         <td style=${
                           status === STATUS_OUTDATED
                             ? "background-color:red"
                             : "background-color:green"
                         }>${status}</td>
-                        <td> ${upgradeType} </td>
+                        <td> ${upgradeType.toUpperCase()} </td>
+                        <td> <a href=${registry_url} target="_blank"> ${registry_url} </a> </td>
+                        <td> <a href=${npm_url} target="_blank"> ${npm_url} </a> </td>
                         </tr>`;
                          })
                          .join("")}
                     </tbody>
-                    </table>`;
+                    </table>`
+    : "";
 
   return { template, outdated_counter };
 };
@@ -102,24 +126,53 @@ export const generateReportFromRawData = ({
       devTableOutdatedCounter + peerTableOutdatedCounter + depOutdatedCounter;
 
     if (totalOutdated == 0) {
-      return `There are ${totalOutdated} Packages that need to be updated. Woohoo! 🎉`;
+      return `🎉 There are ${totalOutdated} Packages that need to be updated. Woohoo! `;
     }
     if (totalOutdated == 1) {
-      return `There is ${totalOutdated} Package that needs to be updated - Not bad! `;
+      return `⚠️ There is ${totalOutdated} Package that needs to be updated - Not bad! `;
     }
 
     if (totalOutdated > 1 && totalOutdated < 10) {
-      return `There are  ${totalOutdated} Packages that need to be updated`;
+      return `⚠️ There are  ${totalOutdated} Packages that need to be updated`;
     }
 
     if (totalOutdated >= 10) {
-      return `Ouch... There are ${totalOutdated} Packages that need to be updated 🙈 Good Luck! `;
+      return `​​⚠️​😱​ Ouch... There are ${totalOutdated} Packages that need to be updated 🙈 Good Luck! `;
     }
   };
 
   return `
         <html>
         <title> Dependency Check -- Report </title>
+        <head>
+        </head>
+        <style>
+        {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+         td, th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+        tr {
+            cursor: pointer;
+        }
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        #th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+        }
+        </style>
+    
         <body>
         <h1> Results Below: </h1>
         <h3>${dependencyString()} </h3>
