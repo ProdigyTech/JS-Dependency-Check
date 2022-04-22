@@ -12,7 +12,7 @@
 <br />
 `npm install  @prodigytech/js-dependency-check  --save-dev`
 
-### One of your packages isn't hosted in the npm registry? no problem, add an environment variable called `DEP_CHECK_WHITELIST` and enter the dependencies separated by comma (,). This will skip the registry lookup for that file. 
+### One of your packages isn't hosted in the npm registry? no problem, add an environment variable called `DEP_CHECK_WHITELIST` and enter the dependencies separated by comma (,). This will skip the registry lookup for that dependency. 
 
 
 ### To run this utility 
