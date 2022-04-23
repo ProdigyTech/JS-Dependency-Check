@@ -29,8 +29,12 @@ export const transformDependencyObject = (dep = {}) => {
 
 const STATUS_UP_TO_DATE = "UP TO DATE";
 const STATUS_OUTDATED = "OUTDATED";
+const STATUS_UNKNOWN = "UNKNOWN"
 
 const generateStatusString = (latest, current) => {
+  if (latest === "ERROR" || current === "ERROR") {
+    return STATUS_UNKNOWN;
+  }
   if (semverGte(current, latest)) {
     return STATUS_UP_TO_DATE;
   } else {
