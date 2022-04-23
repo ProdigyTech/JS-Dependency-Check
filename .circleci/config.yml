@@ -39,6 +39,9 @@ jobs:
       - run:
           name: "Build Project"
           command: "yarn build"
+      - run:
+          name: Semantic release 🚀
+          command: npx semantic-release
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
