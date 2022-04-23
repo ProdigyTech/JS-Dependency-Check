@@ -17,30 +17,47 @@ export const checkDependencies = async ({
   devDependencies = [],
   dependencies = [],
 }) => {
+
+  const failedLookupResult = [];
   const whiteList =
     whitelistedDependencies.length > 0
       ? whitelistedDependencies.split(",")
       : [];
 
-  const peerDependenciesResult = await processDependencies(
-    peerDependencies,
-    whiteList
+  // successfulLookups, failedLookups;
+
+  const {
+    successfulLookups: peerDependenciesResult,
+    failedLookups: failedPeerDependencies,
+  } = await processDependencies(peerDependencies, whiteList);
+
+  const {
+    successfulLookups: devDependenciesResult,
+    failedLookups: failedDevDependencies,
+  } = await processDependencies(devDependencies, whiteList);
+
+  const {
+    successfulLookups: dependenciesResult,
+    failedLookups: failedDependencies,
+  } = await processDependencies(dependencies, whiteList);
+
+  failedLookupResult.push(
+    ...failedDependencies,
+    ...failedDevDependencies,
+    ...failedPeerDependencies
   );
-  const devDependenciesResult = await processDependencies(
-    devDependencies,
-    whiteList
-  );
-  const dependenciesResult = await processDependencies(dependencies, whiteList);
 
   return {
     peerDependenciesResult,
     devDependenciesResult,
     dependenciesResult,
+    failedLookupResult,
   };
 };
 
 const processDependencies = async (dep, whiteList) => {
   try {
+    const failedLookups = [];
     const filteredDeps = filterDependencies(whiteList, dep);
     const processedData = await Promise.all(
       filteredDeps.map(async (current) => {
@@ -51,7 +68,15 @@ const processDependencies = async (dep, whiteList) => {
         return report;
       })
     );
-    return processedData.filter((f) => !f.package.error);
+    const successfulLookups = processedData.filter((f) => {
+      if (f.package.error) {
+        failedLookups.push(f);
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return { successfulLookups, failedLookups };
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -59,8 +84,9 @@ const processDependencies = async (dep, whiteList) => {
 };
 
 const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
+      const url = `${NPM_REGISTRY_URL}/${jsPackage}`;
   try {
-    const { data } = await axios.get(`${NPM_REGISTRY_URL}/${jsPackage}`);
+    const { data } = await axios.get(url);
     const { time } = data;
     const tags = data["dist-tags"];
     return { versionTimeline: time, tags };
@@ -68,7 +94,14 @@ const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
     console.error(
       `There was an issue searching the registry for ${jsPackage}, skipping...`
     );
-    return { versionTimeline: {}, tags: {}, error: true };
+    return {
+      versionTimeline: {},
+      tags: {},
+      error: true,
+      name: jsPackage,
+      url,
+      stackTrace: e,
+    };
   }
 };
 
@@ -78,8 +111,18 @@ const generateVersionObject = ({
   latest,
   definedVersion,
   error = false,
+  currentPackage,
+  stackTrace,
 }) => {
-  if (error) return { package: { error } };
+  if (error)
+    return {
+      package: {
+        error,
+        name: currentPackage.package,
+        version: currentPackage.version,
+        stackTrace: stackTrace,
+      },
+    };
 
   return {
     package: {
@@ -101,7 +144,7 @@ const generateVersionObject = ({
 };
 
 const generateReport = async (
-  { versionTimeline, tags, error = false },
+  { versionTimeline, tags, error = false, stackTrace },
   currentPackage
 ) => {
   return new Promise((resolve, reject) => {
@@ -109,7 +152,9 @@ const generateReport = async (
       if (error) {
         return resolve(
           generateVersionObject({
-            error
+            error,
+            currentPackage,
+            stackTrace,
           })
         );
       }

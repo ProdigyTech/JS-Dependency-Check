@@ -42,6 +42,37 @@ const generateStatusString = (latest, current) => {
   }
 };
 
+const generateTableFromErrorResult = (errors = []) => {
+const errorTable = errors.length
+  ? `
+                    <h2>Failed Lookups </h2>
+                    <h4>We couldn't locate the packages below in the public npm registry </h4>
+                <table id="result-table-error style="width:100%">
+                    <thead>
+                        <tr>
+                        <td>Package</td>
+                        <td>Current Version</td>
+                        <td>Status</td>
+                        <td>Response Code</td>
+                    </thead>
+                    <tbody>
+                       ${errors
+                         .map(({ package: depPackage }) => {
+                           return `<tr>
+                           <td>${depPackage.name}</td>
+                           <td>${depPackage.version}</td>
+                           <td>${STATUS_UNKNOWN}</td>
+                           <td>${depPackage.stackTrace.toString()}</td>
+                           </tr>`;
+                         })
+                         .join("")}
+                    </tbody>
+                    </table>`
+  : "";
+return { errorTable };
+
+}
+
 const generateTableFromDepResult = (dep, type) => {
   const getStatusBgColor = (UPGRADE_TYPE) => {
     if (UPGRADE_TYPE !== "N/A") {
@@ -133,6 +164,7 @@ export const generateReportFromRawData = ({
   peerDependenciesResult,
   devDependenciesResult,
   dependenciesResult,
+  failedLookupResult,
 }) => {
   const { template: depTable, outdated_counter: depOutdatedCounter } =
     generateTableFromDepResult(dependenciesResult, "Dependencies");
@@ -141,6 +173,8 @@ export const generateReportFromRawData = ({
     generateTableFromDepResult(devDependenciesResult, "Dev Dependencies");
   const { template: peerTable, outdated_counter: peerTableOutdatedCounter } =
     generateTableFromDepResult(peerDependenciesResult, "Peer Dependencies");
+
+  const {errorTable} = generateTableFromErrorResult(failedLookupResult)
 
   const dependencyString = () => {
     const totalOutdated =
@@ -209,6 +243,9 @@ export const generateReportFromRawData = ({
         </div>
         <div class="peer-table">
                 ${peerTable}
+        </div>
+        <div class="error-table">
+            ${errorTable}
         </div>
         </body>
     `;
