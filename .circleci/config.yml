@@ -39,15 +39,12 @@ jobs:
       - run:
           name: "Build Project"
           command: "yarn build"
-      - run:
-          name: Semantic release 🚀
-          command: npx semantic-release
       - run: 
           name: Authenticate with NPM Registry
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run: 
-          name: Publish NPM Package
-          command: npm publish
+      - run:
+          name: Semantic release 🚀
+          command: npx semantic-release
 
 
 # Invoke jobs via workflows
