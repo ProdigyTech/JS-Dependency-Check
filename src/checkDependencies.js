@@ -24,8 +24,6 @@ export const checkDependencies = async ({
       ? whitelistedDependencies.split(",")
       : [];
 
-  // successfulLookups, failedLookups;
-
   const {
     successfulLookups: peerDependenciesResult,
     failedLookups: failedPeerDependencies,
