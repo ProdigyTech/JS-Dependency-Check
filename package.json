@@ -25,7 +25,8 @@
     "semantic-release": "^19.0.2"
   },
   "scripts": {
-    "start": "yarn build && node bin/index.js",
+    "start": "yarn build && node dist/bundle.js",
+    "start-dev": "node bin/index.js",
     "build": "rollup -c"
   }
 }
