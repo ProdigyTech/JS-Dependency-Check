@@ -95,8 +95,6 @@ const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
       `There was an issue searching the registry for ${jsPackage}, skipping...`
     );
     return {
-      versionTimeline: {},
-      tags: {},
       error: true,
       name: jsPackage,
       url,
