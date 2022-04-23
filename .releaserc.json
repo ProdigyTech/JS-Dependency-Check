@@ -11,12 +11,6 @@
         }
     ],
     "plugins": [
-        ["@semantic-release/npm",
-        {
-            "path": "@semantic-release/exec",
-            "cmd": "echo ${nextRelease.version} > version.txt"
-        }
-    ],
     [
         "@semantic-release/commit-analyzer",
         {
