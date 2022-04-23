@@ -1,6 +1,6 @@
 import axios from "axios";
 import semverGte from "semver/functions/gte.js";
-import diff from 'semver/functions/diff.js'
+import diff from "semver/functions/diff.js";
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
 const NPM_PACKAGE_URL = "https://www.npmjs.com/package";
@@ -51,7 +51,7 @@ const processDependencies = async (dep, whiteList) => {
         return report;
       })
     );
-    return processedData;
+    return processedData.filter((f) => !f.package.error);
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -59,10 +59,17 @@ const processDependencies = async (dep, whiteList) => {
 };
 
 const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
-  const { data } = await axios.get(`${NPM_REGISTRY_URL}/${jsPackage}`);
-  const { time } = data;
-  const tags = data["dist-tags"];
-  return { versionTimeline: time, tags };
+  try {
+    const { data } = await axios.get(`${NPM_REGISTRY_URL}/${jsPackage}`);
+    const { time } = data;
+    const tags = data["dist-tags"];
+    return { versionTimeline: time, tags };
+  } catch (e) {
+    console.error(
+      `There was an issue searching the registry for ${jsPackage}, skipping...`
+    );
+    return { versionTimeline: {}, tags: {}, error: true };
+  }
 };
 
 const generateVersionObject = ({
@@ -70,7 +77,10 @@ const generateVersionObject = ({
   versionTimeline,
   latest,
   definedVersion,
+  error = false,
 }) => {
+  if (error) return { package: { error } };
+
   return {
     package: {
       name,
@@ -85,13 +95,25 @@ const generateVersionObject = ({
         releaseDate: versionTimeline[definedVersion],
       },
       upgradeType: diff(definedVersion, latest || definedVersion) || "N/A",
+      error,
     },
   };
 };
 
-const generateReport = async ({ versionTimeline, tags }, currentPackage) => {
+const generateReport = async (
+  { versionTimeline, tags, error = false },
+  currentPackage
+) => {
   return new Promise((resolve, reject) => {
     try {
+      if (error) {
+        return resolve(
+          generateVersionObject({
+            error
+          })
+        );
+      }
+
       const getDefinedVersion = () => {
         if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
           const v = currentPackage.version.split("");

@@ -26,6 +26,7 @@
   },
   "scripts": {
     "start": "yarn build && node dist/bundle.js",
+    "start-dev": "node bin/index.js",
     "build": "rollup -c"
   }
 }
