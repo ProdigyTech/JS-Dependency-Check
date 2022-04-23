@@ -36,9 +36,6 @@ jobs:
       - run: 
           name: "install rollup"
           command: "npm install --global rollup"
-      - persist_to_workspace:
-          root: ~/repo
-          paths: [.]
       - run:
           name: "Build Project"
           command: "yarn build"
