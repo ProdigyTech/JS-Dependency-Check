@@ -33,6 +33,9 @@ jobs:
       - run:
           name: "view contents"
           command: "ls -lah"
+      - run: 
+          name: "install rollup"
+          command: "npm install --global rollup"
       - run:
           name: "Build Project"
           command: "yarn build"
