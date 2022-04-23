@@ -51,7 +51,7 @@ const processDependencies = async (dep, whiteList) => {
         return report;
       })
     );
-    return processedData.filter(f => !f.package.error);
+    return processedData.filter((f) => !f.package.error);
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -79,32 +79,25 @@ const generateVersionObject = ({
   definedVersion,
   error = false,
 }) => {
-  if (!error) {
-    return {
-      package: {
-        name,
-        registry_url: `${NPM_REGISTRY_URL}/${name}`,
-        npm_url: `${NPM_PACKAGE_URL}/${name}`,
-        latest: {
-          version: latest || definedVersion,
-          releaseDate:
-            versionTimeline[latest] || versionTimeline[definedVersion],
-        },
-        current: {
-          version: definedVersion,
-          releaseDate: versionTimeline[definedVersion],
-        },
-        upgradeType: diff(definedVersion, latest || definedVersion) || "N/A",
-        error,
+  if (error) return { package: { error } };
+
+  return {
+    package: {
+      name,
+      registry_url: `${NPM_REGISTRY_URL}/${name}`,
+      npm_url: `${NPM_PACKAGE_URL}/${name}`,
+      latest: {
+        version: latest || definedVersion,
+        releaseDate: versionTimeline[latest] || versionTimeline[definedVersion],
       },
-    };
-  } else {
-    return {
-      package: {
-        error,
+      current: {
+        version: definedVersion,
+        releaseDate: versionTimeline[definedVersion],
       },
-    };
-  }
+      upgradeType: diff(definedVersion, latest || definedVersion) || "N/A",
+      error,
+    },
+  };
 };
 
 const generateReport = async (
@@ -112,50 +105,48 @@ const generateReport = async (
   currentPackage
 ) => {
   return new Promise((resolve, reject) => {
-    if (!error) {
-      try {
-        const getDefinedVersion = () => {
-          if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
-            const v = currentPackage.version.split("");
-            const [throwAway, ...rest] = v;
-            return rest.join("");
-          } else {
-            return currentPackage.version;
-          }
-        };
-
-        const definedVersion = getDefinedVersion();
-
-        const { latest } = tags;
-        let versionInfo = {};
-
-        if (!semverGte(definedVersion, latest)) {
-          versionInfo = generateVersionObject({
-            name: currentPackage.package,
-            versionTimeline,
-            latest,
-            definedVersion,
-          });
-        } else {
-          versionInfo = generateVersionObject({
-            name: currentPackage.package,
-            versionTimeline,
-            definedVersion,
-          });
-        }
-        resolve(versionInfo);
-      } catch (e) {
-        console.warn(e);
-        reject(e);
+    try {
+      if (error) {
+        return resolve(
+          generateVersionObject({
+            error
+          })
+        );
       }
-    } else {
-      const errorObject = generateVersionObject({
-        name: currentPackage.package,
-        versionTimeline,
-        definedVersion:'0.0.0',
-        error,
-      });
-      resolve(errorObject);
+
+      const getDefinedVersion = () => {
+        if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
+          const v = currentPackage.version.split("");
+          const [throwAway, ...rest] = v;
+          return rest.join("");
+        } else {
+          return currentPackage.version;
+        }
+      };
+
+      const definedVersion = getDefinedVersion();
+
+      const { latest } = tags;
+      let versionInfo = {};
+
+      if (!semverGte(definedVersion, latest)) {
+        versionInfo = generateVersionObject({
+          name: currentPackage.package,
+          versionTimeline,
+          latest,
+          definedVersion,
+        });
+      } else {
+        versionInfo = generateVersionObject({
+          name: currentPackage.package,
+          versionTimeline,
+          definedVersion,
+        });
+      }
+      resolve(versionInfo);
+    } catch (e) {
+      console.warn(e);
+      reject(e);
     }
   });
 };
