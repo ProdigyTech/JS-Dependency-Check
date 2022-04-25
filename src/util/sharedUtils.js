@@ -29,7 +29,7 @@ export const transformDependencyObject = (dep = {}) => {
 
 const STATUS_UP_TO_DATE = "UP TO DATE";
 const STATUS_OUTDATED = "OUTDATED";
-const STATUS_UNKNOWN = "UNKNOWN"
+const STATUS_UNKNOWN = "UNKNOWN";
 
 const generateStatusString = (latest, current) => {
   if (latest === "ERROR" || current === "ERROR") {
@@ -43,8 +43,8 @@ const generateStatusString = (latest, current) => {
 };
 
 const generateTableFromErrorResult = (errors = []) => {
-const errorTable = errors.length
-  ? `
+  const errorTable = errors.length
+    ? `
                     <h2>Failed Lookups </h2>
                     <h4>We couldn't locate the packages below in the public npm registry </h4>
                 <table id="result-table-error style="width:100%">
@@ -68,10 +68,9 @@ const errorTable = errors.length
                          .join("")}
                     </tbody>
                     </table>`
-  : "";
-return { errorTable };
-
-}
+    : "";
+  return { errorTable };
+};
 
 const generateTableFromDepResult = (dep, type) => {
   const getStatusBgColor = (UPGRADE_TYPE) => {
@@ -160,12 +159,15 @@ const generateTableFromDepResult = (dep, type) => {
   return { template, outdated_counter };
 };
 
-export const generateReportFromRawData = ({
-  peerDependenciesResult,
-  devDependenciesResult,
-  dependenciesResult,
-  failedLookupResult,
-}) => {
+export const generateReportFromRawData = (
+  {
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+    failedLookupResult,
+  },
+  { name, version }
+) => {
   const { template: depTable, outdated_counter: depOutdatedCounter } =
     generateTableFromDepResult(dependenciesResult, "Dependencies");
 
@@ -174,7 +176,7 @@ export const generateReportFromRawData = ({
   const { template: peerTable, outdated_counter: peerTableOutdatedCounter } =
     generateTableFromDepResult(peerDependenciesResult, "Peer Dependencies");
 
-  const {errorTable} = generateTableFromErrorResult(failedLookupResult)
+  const { errorTable } = generateTableFromErrorResult(failedLookupResult);
 
   const dependencyString = () => {
     const totalOutdated =
@@ -233,8 +235,11 @@ export const generateReportFromRawData = ({
         </style>
     
         <body>
-        <h1> Results Below: </h1>
+        <br />
+        <h2>Dependency Check Results for ${name} v${version} </h2>
+        <br />
         <h3>${dependencyString()} </h3>
+        <br />
         <div class="dep-table">
                 ${depTable}
         </div>

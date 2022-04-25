@@ -17,7 +17,6 @@ export const checkDependencies = async ({
   devDependencies = [],
   dependencies = [],
 }) => {
-
   const failedLookupResult = [];
   const whiteList =
     whitelistedDependencies.length > 0
@@ -27,17 +26,17 @@ export const checkDependencies = async ({
   const {
     successfulLookups: peerDependenciesResult,
     failedLookups: failedPeerDependencies,
-  } = await processDependencies(peerDependencies, whiteList);
+  } = await performDependencyLookup(peerDependencies, whiteList);
 
   const {
     successfulLookups: devDependenciesResult,
     failedLookups: failedDevDependencies,
-  } = await processDependencies(devDependencies, whiteList);
+  } = await performDependencyLookup(devDependencies, whiteList);
 
   const {
     successfulLookups: dependenciesResult,
     failedLookups: failedDependencies,
-  } = await processDependencies(dependencies, whiteList);
+  } = await performDependencyLookup(dependencies, whiteList);
 
   failedLookupResult.push(
     ...failedDependencies,
@@ -53,7 +52,7 @@ export const checkDependencies = async ({
   };
 };
 
-const processDependencies = async (dep, whiteList) => {
+const performDependencyLookup = async (dep, whiteList) => {
   try {
     const failedLookups = [];
     const filteredDeps = filterDependencies(whiteList, dep);
@@ -62,8 +61,7 @@ const processDependencies = async (dep, whiteList) => {
         const data = await checkDependencyInNPMRegistry({
           package: current.package,
         });
-        const report = await generateReport(data, current);
-        return report;
+        return await transformDependencyData(data, current);
       })
     );
     const successfulLookups = processedData.filter((f) => {
@@ -82,7 +80,7 @@ const processDependencies = async (dep, whiteList) => {
 };
 
 const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
-      const url = `${NPM_REGISTRY_URL}/${jsPackage}`;
+  const url = `${NPM_REGISTRY_URL}/${jsPackage}`;
   try {
     const { data } = await axios.get(url);
     const { time } = data;
@@ -139,10 +137,23 @@ const generateVersionObject = ({
   };
 };
 
-const generateReport = async (
+const transformDependencyData = async (
   { versionTimeline, tags, error = false, stackTrace },
   currentPackage
 ) => {
+  const getDefinedVersion = () => {
+    /**
+     * For versions defined like ^3.0.0 or ~3.0.0, remove the ^ or ~
+     */
+    if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
+      const v = currentPackage.version.split("");
+      const [throwAway, ...rest] = v;
+      return rest.join("");
+    } else {
+      return currentPackage.version;
+    }
+  };
+
   return new Promise((resolve, reject) => {
     try {
       if (error) {
@@ -154,16 +165,6 @@ const generateReport = async (
           })
         );
       }
-
-      const getDefinedVersion = () => {
-        if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
-          const v = currentPackage.version.split("");
-          const [throwAway, ...rest] = v;
-          return rest.join("");
-        } else {
-          return currentPackage.version;
-        }
-      };
 
       const definedVersion = getDefinedVersion();
 
