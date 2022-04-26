@@ -31,6 +31,36 @@ const STATUS_UP_TO_DATE = "UP TO DATE";
 const STATUS_OUTDATED = "OUTDATED";
 const STATUS_UNKNOWN = "UNKNOWN";
 
+const legendLookup = [
+  {
+    key: [STATUS_UP_TO_DATE, "N/A"],
+    color: "background-color:green",
+    meaning: "Up to date, no action needed.",
+  },
+  {
+    key: ["PATCH"],
+    color: "background-color:yellowgreen",
+    meaning: "Patch upgrade, no breaking changes",
+  },
+  {
+    key: ["PREPATCH", "PREMINOR", "MINOR"],
+    color: "background-color:yellow",
+    meaning:
+      "Minor upgrade, possible breaking changes. \n Consult the change log",
+  },
+  {
+    key: ["PRERELEASE", "MAJOR", "PREMAJOR"],
+    color: "background-color:red",
+    meaning: "Major upgrade with breaking changes. \n Consult the change log",
+  },
+];
+
+const getLegendDataByKey = (key) => {
+  return legendLookup.find(({ key: keyArray }) => {
+    return keyArray.includes(key);
+  });
+};
+
 const generateStatusString = (latest, current) => {
   if (latest === "ERROR" || current === "ERROR") {
     return STATUS_UNKNOWN;
@@ -72,26 +102,32 @@ const generateTableFromErrorResult = (errors = []) => {
   return { errorTable };
 };
 
+const generateLegendTable = () =>
+  `    
+                    <h4>Legend </h4>
+                <table id="legend">
+                    <thead>
+                        <tr>
+                        <td>Color</td>
+                        <td>Meaning</td>
+                        <td>Upgrade Type</td>
+                    </thead>
+                    <tbody>
+                       ${legendLookup
+                         .map(({ color, meaning, key }) => {
+                           return `<tr>
+                           <td style="${color}"></td>
+                           <td>${meaning}</td>
+                           <td>${key.join(" ")}</td>
+                           </tr>`;
+                         })
+                         .join("")}
+                    </tbody>
+                    </table>`;
+
 const generateTableFromDepResult = (dep, type) => {
   const getStatusBgColor = (UPGRADE_TYPE) => {
-    if (UPGRADE_TYPE !== "N/A") {
-      switch (UPGRADE_TYPE) {
-        case "PATCH":
-          return "background-color:yellowgreen";
-        case "PREPATCH":
-        case "PREMINOR":
-        case "MINOR":
-          return "background-color:yellow";
-        case "PRERELEASE":
-        case "MAJOR":
-        case "PREMAJOR":
-          return "background-color:red";
-        default:
-          return "background-color:red";
-      }
-    } else {
-      return "background-color:green";
-    }
+    return getLegendDataByKey(UPGRADE_TYPE)?.color;
   };
 
   let outdated_counter = 0;
@@ -143,7 +179,7 @@ const generateTableFromDepResult = (dep, type) => {
                         <td>${currentVersionDate}</td>
                         <td>${latest.version} </td>
                          <td>${latestVersionReleaseDate}</td>
-                        <td style=${getStatusBgColor(
+                        <td class="status" style=${getStatusBgColor(
                           upgradeType.toUpperCase()
                         )}>${status}</td>
                         <td> ${upgradeType.toUpperCase()} </td>
@@ -178,23 +214,25 @@ export const generateReportFromRawData = (
 
   const { errorTable } = generateTableFromErrorResult(failedLookupResult);
 
+  const legendTable = generateLegendTable();
+
   const dependencyString = () => {
     const totalOutdated =
       devTableOutdatedCounter + peerTableOutdatedCounter + depOutdatedCounter;
 
     if (totalOutdated == 0) {
-      return `🎉 There are ${totalOutdated} Packages that need to be updated. Woohoo! `;
+      return `🎉 There are ${totalOutdated} packages that need to be updated. Woohoo! `;
     }
     if (totalOutdated == 1) {
-      return `⚠️ There is ${totalOutdated} Package that needs to be updated - Not bad! `;
+      return `⚠️ There is ${totalOutdated} package that needs to be updated - Not bad! `;
     }
 
     if (totalOutdated > 1 && totalOutdated < 10) {
-      return `⚠️ There are  ${totalOutdated} Packages that need to be updated`;
+      return `⚠️ There are  ${totalOutdated} packages that need to be updated`;
     }
 
     if (totalOutdated >= 10) {
-      return `​​⚠️​😱​ Ouch... There are ${totalOutdated} Packages that need to be updated 🙈 Good Luck! `;
+      return `​​⚠️​😱​ Ouch... There are ${totalOutdated} packages that need to be updated 🙈 Good Luck! `;
     }
   };
 
@@ -209,9 +247,32 @@ export const generateReportFromRawData = (
         border-collapse: collapse;
         width: 100%;
         }
+
+        div.wrapper{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width:100%;
+        }
+
+        .header, .sub-header{
+          flex-direction: row;
+          width:90%;
+        }
         
-        table {
-            width:100%;
+        .legend-table {
+          flex-direction: row;
+          width: 50%;
+          margin-right: 3em;
+        }
+        
+        .dep-table, .dev-table, .peer-table, .error-table {
+             width: 80%;
+             flex-direction: row;
+             min-width: 60%;
+        }
+        .status {
+          min-width: 5em;
         }
 
          td, th {
@@ -235,11 +296,17 @@ export const generateReportFromRawData = (
         </style>
     
         <body>
-        <br />
+        <div class="wrapper">
+        <div class=header>
         <h2>Dependency Check Results for ${name} v${version} </h2>
-        <br />
-        <h3>${dependencyString()} </h3>
-        <br />
+        </div>
+        <div class="sub-header">
+          <h3>${dependencyString()} </h3>
+        </div>
+        
+        <div class="legend-table"> 
+          ${legendTable}
+        </div>
         <div class="dep-table">
                 ${depTable}
         </div>
@@ -252,7 +319,9 @@ export const generateReportFromRawData = (
         <div class="error-table">
             ${errorTable}
         </div>
+        </div>
         </body>
+        </html>
     `;
 };
 

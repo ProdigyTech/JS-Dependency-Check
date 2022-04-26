@@ -6,6 +6,8 @@ import {
 } from "../src/util/sharedUtils.js";
 
 import appRoot from "app-root-path";
+
+try {
 global.__basedir = appRoot.path;
 
 /**
@@ -29,12 +31,19 @@ const rawData = await checkDependencies({
   devDependencies,
 });
 
+
+
 /**
  *  Generate a report from the registry lookup
  */
 const htmlReport = generateReportFromRawData(rawData, repoInfo);
 
 /**
- *  Save the report x
+ *  Save the report 
  */
 await writeReport(htmlReport);
+}catch(e) {
+  console.log("Something went wrong while running the utility")
+  console.error(e)
+  process.exit(1)
+}
