@@ -18,11 +18,13 @@
 #### To run this utility 
 - make sure you've added it as a dependency to your project
 - run `npx @prodigytech/js-dependency-check`
+- The report will be saved to the root directory of the project - dependency-status-report
+
+#### Note: the default report type is HTML, however if you would like a JSON report, pass --report-type=json as a argument to the npx command
+`npx @prodigytech/js-dependency-check --report-type=json`
 
 
 ### Todo
-- Better Error Handling around NPM Registry lookup
+- accept custom registry endpoint 
 - Better package whitelist system
-- Add more detail to the report about outdated dependencies (MAJOR/MINOR/PATCH updates)
-- Automatically add script to package.json for project
 - Tests 
