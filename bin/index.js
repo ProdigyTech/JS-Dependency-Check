@@ -55,7 +55,7 @@ if (process.env.NODE_ENV !== "ci") {
       const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
       await writeReport(jsonReport, reportTypes.JSON);
     }
-
+      console.log(a)
     /**
      *  Save the report
      */
