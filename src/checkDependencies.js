@@ -104,7 +104,7 @@ const generateVersionObject = ({
   versionTimeline,
   latest,
   definedVersion,
-  error = false,
+  error=false,
   currentPackage,
   stackTrace,
 }) => {

@@ -28,10 +28,9 @@ test("Unknown dev dependency should fail lookup", async () => {
   });
 
   const { failedLookupResult } = data;
-
+ expect(failedLookupResult[0].package.error).toBe(true)
  expect(failedLookupResult).toHaveLength(1);
  expect(failedLookupResult[0].package.name).toBe(fakePackageName);
- 
 });
 
 test("known dev dependency should have successful lookup", async () => {
