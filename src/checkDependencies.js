@@ -137,22 +137,24 @@ const generateVersionObject = ({
   };
 };
 
+export const getDefinedVersion = (currentPackage) => {
+  /**
+   * For versions defined like ^3.0.0 or ~3.0.0, remove the ^ or ~
+   */
+  if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
+    const v = currentPackage.version.split("");
+    const [throwAway, ...rest] = v;
+    return rest.join("");
+  } else {
+    return currentPackage.version;
+  }
+};
+
 const transformDependencyData = async (
   { versionTimeline, tags, error = false, stackTrace },
   currentPackage
 ) => {
-  const getDefinedVersion = () => {
-    /**
-     * For versions defined like ^3.0.0 or ~3.0.0, remove the ^ or ~
-     */
-    if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
-      const v = currentPackage.version.split("");
-      const [throwAway, ...rest] = v;
-      return rest.join("");
-    } else {
-      return currentPackage.version;
-    }
-  };
+  
 
   return new Promise((resolve, reject) => {
     try {
@@ -166,7 +168,7 @@ const transformDependencyData = async (
         );
       }
 
-      const definedVersion = getDefinedVersion();
+      const definedVersion = getDefinedVersion(currentPackage);
 
       const { latest } = tags;
       let versionInfo = {};
