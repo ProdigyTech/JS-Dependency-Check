@@ -36,12 +36,12 @@ jobs:
       - run: 
           name: "install rollup"
           command: "npm install --global rollup"
-      - run:
-          name: "Run Tests"
-          command: "yarn test"
       - run: 
           name: "Build Project"
           command: "yarn build"
+      - run:
+          name: "Run Tests"
+          command: "yarn test"
       - run: 
           name: Authenticate with NPM Registry
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
