@@ -13,8 +13,11 @@
     "dependency-check": "dist/bundle.js"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.16.11",
     "app-root-path": "^3.0.0",
     "axios": "^0.27.1",
+    "babel-jest": "^28.0.1",
+    "jest": "^28.0.1",
     "semver": "7.3.7"
   },
   "devDependencies": {
@@ -27,6 +30,7 @@
   "scripts": {
     "start": "yarn build && node dist/bundle.js",
     "start-dev": "node bin/index.js",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "NODE_ENV=ci jest --testPathPattern=src/test --coverage"
   }
 }

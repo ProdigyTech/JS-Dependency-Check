@@ -9,51 +9,58 @@ import {
 import { reportTypes } from "../src/enums.js";
 
 import appRoot from "app-root-path";
+global.__basedir = appRoot.path;
 
-try {
-  global.__basedir = appRoot.path;
- 
-  const args = process.argv.slice(2);
+export const getReportType = () => {
+  const type = args.find((a) => Object.values(reportTypes).includes(a));
+  return type || reportTypes.HTML;
+};
 
-  const reportType = args[0] || reportTypes.HTML;
 
-  /**
-   *  TODO: Possibly check resolutions (yarn) field?
-   */
+const args = process.argv.slice(2);
+const reportType = getReportType();
 
-  /**
-   *  Read the package.json, pull dependency information
-   */
-  const dependenciesObject = await readPackageJson();
+if (process.env.NODE_ENV !== "ci") {
+  try {
+    /**
+     *  TODO: Possibly check resolutions (yarn) field?
+     */
 
-  const { peerDependencies, dependencies, devDependencies, repoInfo } =
-    dependenciesObject;
+    /**
+     *  Read the package.json, pull dependency information
+     */
+    const dependenciesObject = await readPackageJson();
 
-  /**
-   *  Check the set of dependencies through the npm registry lookup
-   */
-  const rawData = await checkDependencies({
-    peerDependencies,
-    dependencies,
-    devDependencies,
-  });
+    const { peerDependencies, dependencies, devDependencies, repoInfo } =
+      dependenciesObject;
 
-  /**
-   *  Generate a report from the registry lookup
-   */
-  if (!reportType || reportType == reportTypes.HTML) {
-    const htmlReport = generateHTMLReportFromRawData(rawData, repoInfo);
-    await writeReport(htmlReport, reportTypes.HTML);
-  } else {
-    const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
-    await writeReport(jsonReport, reportTypes.JSON);
+    /**
+     *  Check the set of dependencies through the npm registry lookup
+     */
+    const rawData = await checkDependencies({
+      peerDependencies,
+      dependencies,
+      devDependencies,
+    });
+
+    /**
+     *  Generate a report from the registry lookup
+     */
+    if (!reportType || reportType == reportTypes.HTML) {
+      const htmlReport = generateHTMLReportFromRawData(rawData, repoInfo);
+      await writeReport(htmlReport, reportTypes.HTML);
+    } else {
+      const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
+      await writeReport(jsonReport, reportTypes.JSON);
+    }
+     
+    /**
+     *  Save the report
+     */
+  } catch (e) {
+    console.log("Something went wrong while running the utility");
+    console.error(e);
+    console.log(e);
+    process.exit(1);
   }
-
-  /**
-   *  Save the report
-   */
-} catch (e) {
-  console.log("Something went wrong while running the utility");
-  console.error(e);
-  process.exit(1);
 }
