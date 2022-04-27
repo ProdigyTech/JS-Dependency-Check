@@ -20,6 +20,8 @@ export const getReportType = () => {
 const args = process.argv.slice(2);
 const reportType = getReportType();
 
+ console.log(a);
+
 if (process.env.NODE_ENV !== "ci") {
   try {
     /**
@@ -55,7 +57,7 @@ if (process.env.NODE_ENV !== "ci") {
       const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
       await writeReport(jsonReport, reportTypes.JSON);
     }
-      console.log(a)
+     
     /**
      *  Save the report
      */
