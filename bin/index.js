@@ -31,8 +31,6 @@ if (process.env.NODE_ENV !== "ci") {
      */
     const dependenciesObject = await readPackageJson();
 
-    console.log(dependenciesObject)
-
     const { peerDependencies, dependencies, devDependencies, repoInfo } =
       dependenciesObject;
 
