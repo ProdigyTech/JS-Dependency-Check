@@ -1,18 +1,14 @@
 import path from "path";
-import { promises as fs } from "fs";
+import { promises as fs, stat } from "fs";
 import semverGte from "semver/functions/gte.js";
 import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
 
-export const generateJSONReportFromRawData = (
-  {
-    peerDependenciesResult,
-    devDependenciesResult,
-    dependenciesResult,
-    failedLookupResult,
-  },
-  { name, version }
-) => {
-  const stats = [
+const generateStats = ({
+  peerDependenciesResult,
+  devDependenciesResult,
+  dependenciesResult,
+}) => {
+  return [
     ...peerDependenciesResult,
     ...devDependenciesResult,
     ...dependenciesResult,
@@ -30,7 +26,17 @@ export const generateJSONReportFromRawData = (
       };
     }
   }, {});
+};
 
+export const generateJSONReportFromRawData = (
+  {
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+    failedLookupResult,
+  },
+  { name, version }
+) => {
   const date = new Date();
 
   return JSON.stringify(
@@ -42,7 +48,11 @@ export const generateJSONReportFromRawData = (
         dependencies: dependenciesResult,
         failedLookups: failedLookupResult,
       },
-      stats,
+      stats: generateStats({
+        peerDependenciesResult,
+        devDependenciesResult,
+        dependenciesResult,
+      }),
       reportGeneratedAt: {
         date: date.toLocaleDateString(),
         time: date.toLocaleTimeString(),
@@ -73,6 +83,12 @@ export const generateHTMLReportFromRawData = (
   const { errorTable } = generateTableFromErrorResult(failedLookupResult);
 
   const legendTable = generateLegendTable();
+  const statsTable = generateStatsTable({
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+    failedLookupResult,
+  });
 
   const dependencyString = () => {
     const totalOutdated =
@@ -164,6 +180,9 @@ export const generateHTMLReportFromRawData = (
         
         <div class="legend-table"> 
           ${legendTable}
+        </div>
+        <div class="stats-table">
+          ${statsTable}
         </div>
         <div class="dep-table">
                 ${depTable}
@@ -345,6 +364,40 @@ const generateTableFromDepResult = (dep, type) => {
     : "";
 
   return { template, outdated_counter };
+};
+
+const generateStatsTable = ({
+  peerDependenciesResult,
+  devDependenciesResult,
+  dependenciesResult,
+}) => {
+  const stats = generateStats({
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+  });
+
+  const statKeys = Object.keys(stats).filter(k => k!== "N/A")
+
+  return statKeys.length ? `    
+                    <h4>Stats </h4>
+                <table id="stats">
+                    <thead>
+                        <tr>
+                        <td>Upgrade Type</td>
+                        <td>Package Count</td>
+                    </thead>
+                    <tbody>
+                    ${statKeys.map(st => {
+                      return `
+                      <tr>
+                      <td>${st.toUpperCase()}</td>
+                      <td>${stats[st]}</td>
+                      </tr>
+                      `
+                    }).join("")}
+                    </tbody>
+                    </table>` : '';
 };
 
 export const writeReport = async (data, type) => {
