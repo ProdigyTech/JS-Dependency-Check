@@ -20,8 +20,6 @@ export const getReportType = () => {
 const args = process.argv.slice(2);
 const reportType = getReportType();
 
- console.log(a);
-
 if (process.env.NODE_ENV !== "ci") {
   try {
     /**
