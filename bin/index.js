@@ -38,10 +38,6 @@ try {
     devDependencies,
   });
 
-  console.log(dependencies)
-
-  console.log(rawData.failedLookupResult)
-
   /**
    *  Generate a report from the registry lookup
    */
