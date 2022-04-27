@@ -2,6 +2,9 @@ import path from "path";
 import { promises as fs, stat } from "fs";
 import semverGte from "semver/functions/gte.js";
 import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
+import appRoot from "app-root-path";
+
+const DIR_BASE = path.resolve(appRoot.path);
 
 const generateStats = ({
   peerDependenciesResult,
@@ -34,6 +37,7 @@ export const generateJSONReportFromRawData = (
     devDependenciesResult,
     dependenciesResult,
     failedLookupResult,
+    disableTime = false
   },
   { name, version }
 ) => {
@@ -54,8 +58,8 @@ export const generateJSONReportFromRawData = (
         dependenciesResult,
       }),
       reportGeneratedAt: {
-        date: date.toLocaleDateString(),
-        time: date.toLocaleTimeString(),
+        date: !disableTime && date.toLocaleDateString(),
+        time: !disableTime && date.toLocaleTimeString(),
       },
     },
     null,
@@ -403,7 +407,7 @@ const generateStatsTable = ({
 export const writeReport = async (data, type) => {
   try {
     const p = path.join(
-      __basedir,
+      DIR_BASE,
       `dependency-status-report.${type.toLowerCase()}`
     );
     await fs.writeFile(p, data);
