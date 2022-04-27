@@ -31,6 +31,6 @@
     "start": "yarn build && node dist/bundle.js",
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
-    "test": "NODE_ENV=ci jest --testPathPattern=src/test"
+    "test": "NODE_ENV=ci jest --testPathPattern=src/test --coverage"
   }
 }
