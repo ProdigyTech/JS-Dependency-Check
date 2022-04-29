@@ -14,9 +14,10 @@ export const getReportType = () => {
 };
 
 const args = process.argv.slice(2);
-const reportType = getReportType();
 
-export const runScript = async (override_type) => {
+
+export const runScript = async (type) => {
+  const reportType = type || getReportType();
     try {
       /**
        *  TODO: Possibly check resolutions (yarn) field?
@@ -42,7 +43,7 @@ export const runScript = async (override_type) => {
       /**
        *  Generate a report from the registry lookup
        */
-      if (!override_type && reportType == reportTypes.HTML) {
+      if (reportType == reportTypes.HTML) {
         const htmlReport = generateHTMLReportFromRawData(rawData, repoInfo);
         await writeReport(htmlReport, reportTypes.HTML);
       } else {

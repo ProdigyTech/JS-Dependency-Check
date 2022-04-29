@@ -6,6 +6,8 @@ import { existsSync, unlink } from "fs";
 import path from "path";
 import { BASE_DIR } from "../util/sharedUtils";
 
+   process.argv.push("--arg1", "JSON");
+
 test("report type should default to HTML", () => {
   expect(getReportType()).toBe(reportTypes.HTML);
 });
@@ -40,7 +42,9 @@ test("should successfully run script against project and generate html file", as
 test(
   "should successfully run script against project and generate json file",
   async () => {
-    await runScript('json');
+ 
+
+    await runScript('JSON')
 
     const expectedFilePath = path.resolve(
       BASE_DIR,
