@@ -1,12 +1,12 @@
-import { checkDependencies } from "../checkDependencies";
+import path from "path";
+import appRoot from "app-root-path";
+import { existsSync, unlink } from "fs";
 import {
   generateJSONReportFromRawData,
   generateHTMLReportFromRawData,
   writeReport,
 } from "../reportGenerator";
-import path from "path";
-import appRoot from "app-root-path";
-import { existsSync, unlink } from "fs";
+import { checkDependencies } from "../checkDependencies";
 
 const mockPackageJsonObject = {
   repoInfo: { name: "@prodigytech/js-dependency-check", version: "4.0.0" },

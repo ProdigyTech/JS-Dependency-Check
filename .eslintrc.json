@@ -1,0 +1,45 @@
+{
+  "extends": ["prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "ignorePatterns": "['/dist/*', 'rollup.config.js']",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "off",
+    "spaced-comment": "off",
+    "no-console": "off",
+    "consistent-return": "off",
+    "func-names": "off",
+    "import/extensions": "off",
+    "object-shorthand": "off",
+    "no-process-exit": "off",
+    "no-param-reassign": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "prefer-destructuring": [
+      "error",
+      {
+        "object": true,
+        "array": false
+      }
+    ],
+    "no-unused-vars": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.js.snap"],
+      "env": {
+        "jest": true
+      }
+    },
+    {
+      "files": ["**/bundle.js", "**/rollup.config.js"],
+      "rules": {
+        "node/no-unpublished-import": ["off"],
+        "import/ignore": ["off"]
+      }
+    }
+  ]
+}

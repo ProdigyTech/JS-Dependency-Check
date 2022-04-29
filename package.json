@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/ProdigyTech/JS-Dependency-Check.git"
   },
+  "engines": {
+    "node": "^16"
+  },
   "bin": {
     "dependency-check": "dist/bundle.js"
   },
@@ -17,13 +20,21 @@
     "app-root-path": "^3.0.0",
     "axios": "^0.27.1",
     "babel-jest": "^28.0.1",
-    "jest": "^28.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "semver": "7.3.7"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "eslint": "^8.14.0",
+    "jest": "^28.0.1",
+    "prettier": "^2.6.2",
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.2"
   },
@@ -31,6 +42,7 @@
     "start": "yarn build && node dist/bundle.js",
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
-    "test": "NODE_ENV=ci jest --testPathPattern=src/test --coverage"
+    "test": "jest --testPathPattern=src/test --coverage",
+    "lint": "eslint --ext .js --ignore-path dist/bundle.js ."
   }
 }

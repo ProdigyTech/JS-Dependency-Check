@@ -6,10 +6,53 @@ const NPM_REGISTRY_URL = "https://registry.npmjs.org";
 const NPM_PACKAGE_URL = "https://www.npmjs.com/package";
 const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST || [];
 
-const filterDependencies = (whiteList, dep) => {
-  return dep.filter((d) => {
-    return !whiteList.includes(d.package);
-  });
+const filterDependencies = (whiteList, dep) =>
+  dep.filter((d) => !whiteList.includes(d.package));
+
+const performDependencyLookup = async (dep, whiteList) => {
+  try {
+    const failedLookups = [];
+    const filteredDeps = filterDependencies(whiteList, dep);
+    const processedData = await Promise.all(
+      filteredDeps.map(async (current) => {
+        const data = await checkDependencyInNPMRegistry({
+          package: current.package,
+        });
+        return await transformDependencyData(data, current);
+      })
+    );
+    const successfulLookups = processedData.filter((f) => {
+      if (f.package.error) {
+        failedLookups.push(f);
+        return false;
+      }
+      return true;
+    });
+    return { successfulLookups, failedLookups };
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
+};
+
+const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
+  const url = `${NPM_REGISTRY_URL}/${jsPackage}`;
+  try {
+    const { data } = await axios.get(url);
+    const { time } = data;
+    const tags = data["dist-tags"];
+    return { versionTimeline: time, tags };
+  } catch (e) {
+    console.error(
+      `There was an issue searching the registry for ${jsPackage}, skipping...`
+    );
+    return {
+      error: true,
+      name: jsPackage,
+      url,
+      stackTrace: e,
+    };
+  }
 };
 
 export const checkDependencies = async ({
@@ -52,59 +95,12 @@ export const checkDependencies = async ({
   };
 };
 
-const performDependencyLookup = async (dep, whiteList) => {
-  try {
-    const failedLookups = [];
-    const filteredDeps = filterDependencies(whiteList, dep);
-    const processedData = await Promise.all(
-      filteredDeps.map(async (current) => {
-        const data = await checkDependencyInNPMRegistry({
-          package: current.package,
-        });
-        return await transformDependencyData(data, current);
-      })
-    );
-    const successfulLookups = processedData.filter((f) => {
-      if (f.package.error) {
-        failedLookups.push(f);
-        return false;
-      } else {
-        return true;
-      }
-    });
-    return { successfulLookups, failedLookups };
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
-  }
-};
-
-const checkDependencyInNPMRegistry = async ({ package: jsPackage }) => {
-  const url = `${NPM_REGISTRY_URL}/${jsPackage}`;
-  try {
-    const { data } = await axios.get(url);
-    const { time } = data;
-    const tags = data["dist-tags"];
-    return { versionTimeline: time, tags };
-  } catch (e) {
-    console.error(
-      `There was an issue searching the registry for ${jsPackage}, skipping...`
-    );
-    return {
-      error: true,
-      name: jsPackage,
-      url,
-      stackTrace: e,
-    };
-  }
-};
-
 const generateVersionObject = ({
   name,
   versionTimeline,
   latest,
   definedVersion,
-  error=false,
+  error = false,
   currentPackage,
   stackTrace,
 }) => {
@@ -143,20 +139,17 @@ export const getDefinedVersion = (currentPackage) => {
    */
   if (Number.isNaN(Number.parseFloat(currentPackage.version))) {
     const v = currentPackage.version.split("");
-    const [throwAway, ...rest] = v;
+    const [, ...rest] = v;
     return rest.join("");
-  } else {
-    return currentPackage.version;
   }
+  return currentPackage.version;
 };
 
 const transformDependencyData = async (
   { versionTimeline, tags, error = false, stackTrace },
   currentPackage
-) => {
-  
-
-  return new Promise((resolve, reject) => {
+) =>
+  new Promise((resolve, reject) => {
     try {
       if (error) {
         return resolve(
@@ -193,4 +186,3 @@ const transformDependencyData = async (
       reject(e);
     }
   });
-};

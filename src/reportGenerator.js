@@ -1,5 +1,5 @@
 import path from "path";
-import { promises as fs, stat } from "fs";
+import { promises as fs } from "fs";
 import semverGte from "semver/functions/gte.js";
 import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
 import appRoot from "app-root-path";
@@ -302,7 +302,7 @@ const generateLegendTable = () =>
 
 const generateTableFromDepResult = (dep, type) => {
   const getStatusBgColor = (UPGRADE_TYPE) => {
-    return getLegendDataByKey(UPGRADE_TYPE)?.color;
+    return getLegendDataByKey(UPGRADE_TYPE).color;
   };
 
   let outdated_counter = 0;
