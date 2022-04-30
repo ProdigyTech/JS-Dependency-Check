@@ -1,6 +1,8 @@
 import { promises as fs } from "fs";
 
-export const readFile = async ({ path, encoding, ...rest }) => {
+import appRoot from "app-root-path";
+
+export const readFile = async ({ path }) => {
   try {
     const fileData = fs.readFile(path);
 
@@ -21,6 +23,7 @@ export const readFile = async ({ path, encoding, ...rest }) => {
  * }]
  *  Transforms the package.json key value pair package/version for easier parsing
  */
-export const transformDependencyObject = (dep = {}) => {
-  return Object.keys(dep).map((key) => ({ package: key, version: dep[key] }));
-};
+export const transformDependencyObject = (dep = {}) => Object.keys(dep).map((key) => ({ package: key, version: dep[key] }));
+
+
+export const BASE_DIR = appRoot.path

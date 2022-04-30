@@ -1,10 +1,12 @@
 
-import { readFile, transformDependencyObject } from './util/sharedUtils.js'
 import path from "path";
+import { readFile, transformDependencyObject } from './util/sharedUtils.js'
+
+import { BASE_DIR } from "./util/sharedUtils.js";
 
 export const readPackageJson = async () => {
 
-    const packagePath = path.join(__basedir, "package.json");
+    const packagePath = path.join(BASE_DIR, "package.json");
     const jsonFile = JSON.parse(await readFile({path: packagePath}))
 
     return {

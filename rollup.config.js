@@ -5,7 +5,7 @@ export default {
   input: ["bin/index.js"],
   plugins: [terser()],
   output: {
-    banner: "#! /usr/bin/env node",
+    banner: "#!/usr/bin/env node",
     minifyInternalExports: true,
     minifyExternalImports: true,
     inlineDynamicImports: true,

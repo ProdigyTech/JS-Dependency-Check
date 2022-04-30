@@ -1,8 +1,8 @@
-import { readFile, transformDependencyObject } from "../util/sharedUtils";
 import path from "path";
 import appRoot from "app-root-path";
+import { readFile, transformDependencyObject } from "../util/sharedUtils";
 import { mockPackageJsonObject } from "./utils";
-import { readPackageJson } from "../readPackage";
+
 const DIR_BASE = path.resolve(appRoot.path);
 
 test("Should read file and return data", async () => {
@@ -27,5 +27,4 @@ test("should transform the package.json", async () => {
   const { dependencies } = data;
   const transformDependency = transformDependencyObject(dependencies);
   expect(transformDependency).toEqual(mockPackageJsonObject.dependencies);
-  
 });
