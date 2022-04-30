@@ -37,6 +37,9 @@ jobs:
           name: "install rollup"
           command: "npm install --global rollup"
       - run: 
+          name: "Lint Project"
+          command: "yarn lint"
+      - run: 
           name: "Build Project"
           command: "yarn build"
       - run:

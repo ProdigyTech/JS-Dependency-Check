@@ -6,8 +6,6 @@ import { existsSync, unlink } from "fs";
 import path from "path";
 import { BASE_DIR } from "../util/sharedUtils";
 
-   process.argv.push("--arg1", "JSON");
-
 test("report type should default to HTML", () => {
   expect(getReportType()).toBe(reportTypes.HTML);
 });
