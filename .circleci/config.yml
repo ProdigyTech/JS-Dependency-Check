@@ -20,7 +20,7 @@ jobs:
           - yarn-packages-{{ checksum "yarn.lock" }}
       - run: 
           name: "Installl Yarn"
-          command: "npm install yarn"
+          command: "npm install  ---prefix=$HOME/.local -g yarn"
       - run: 
           name: "Install Dependencies"
           command: "yarn install"
@@ -35,7 +35,7 @@ jobs:
           command: "ls -lah"
       - run: 
           name: "install rollup"
-          command: "npm install rollup"
+          command: "npm install ---prefix=$HOME/.local -g rollup "
       - run: 
           name: "Lint Project"
           command: "yarn lint"
