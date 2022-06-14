@@ -10,7 +10,7 @@
     "url": "https://github.com/ProdigyTech/JS-Dependency-Check.git"
   },
   "engines": {
-    "node": "^14"
+    "node": ">=14 <=16.14.2"
   },
   "bin": {
     "dependency-check": "dist/bundle.js"
