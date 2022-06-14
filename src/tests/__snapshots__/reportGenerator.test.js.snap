@@ -1,219 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`it should generate a HTML report 1`] = `
-"{
-  \\"repoInfo\\": {
-    \\"name\\": \\"@prodigytech/js-dependency-check\\",
-    \\"version\\": \\"4.0.0\\"
-  },
-  \\"packages\\": {
-    \\"devDependencies\\": [
-      {
-        \\"package\\": {
-          \\"name\\": \\"@semantic-release/changelog\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/@semantic-release/changelog\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/@semantic-release/changelog\\",
-          \\"latest\\": {
-            \\"version\\": \\"6.0.1\\",
-            \\"releaseDate\\": \\"2021-10-30T05:33:19.426Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"6.0.1\\",
-            \\"releaseDate\\": \\"2021-10-30T05:33:19.426Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"@semantic-release/exec\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/@semantic-release/exec\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/@semantic-release/exec\\",
-          \\"latest\\": {
-            \\"version\\": \\"6.0.3\\",
-            \\"releaseDate\\": \\"2021-12-15T19:12:43.779Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"6.0.3\\",
-            \\"releaseDate\\": \\"2021-12-15T19:12:43.779Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"@semantic-release/git\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/@semantic-release/git\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/@semantic-release/git\\",
-          \\"latest\\": {
-            \\"version\\": \\"10.0.1\\",
-            \\"releaseDate\\": \\"2021-10-30T05:27:04.269Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"10.0.1\\",
-            \\"releaseDate\\": \\"2021-10-30T05:27:04.269Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"rollup-plugin-terser\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/rollup-plugin-terser\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/rollup-plugin-terser\\",
-          \\"latest\\": {
-            \\"version\\": \\"7.0.2\\",
-            \\"releaseDate\\": \\"2020-09-04T18:39:17.900Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"7.0.2\\",
-            \\"releaseDate\\": \\"2020-09-04T18:39:17.900Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"semantic-release\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/semantic-release\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/semantic-release\\",
-          \\"latest\\": {
-            \\"version\\": \\"19.0.3\\",
-            \\"releaseDate\\": \\"2022-06-09T02:10:38.012Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"19.0.2\\",
-            \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
-          },
-          \\"upgradeType\\": \\"patch\\",
-          \\"error\\": false
-        }
-      }
-    ],
-    \\"peerDependencies\\": [],
-    \\"dependencies\\": [
-      {
-        \\"package\\": {
-          \\"name\\": \\"@babel/preset-env\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/@babel/preset-env\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/@babel/preset-env\\",
-          \\"latest\\": {
-            \\"version\\": \\"7.18.2\\",
-            \\"releaseDate\\": \\"2022-05-25T09:16:35.689Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"7.16.11\\",
-            \\"releaseDate\\": \\"2022-01-20T15:07:51.834Z\\"
-          },
-          \\"upgradeType\\": \\"minor\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"app-root-path\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/app-root-path\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/app-root-path\\",
-          \\"latest\\": {
-            \\"version\\": \\"3.0.0\\",
-            \\"releaseDate\\": \\"2019-10-31T15:32:11.882Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"3.0.0\\",
-            \\"releaseDate\\": \\"2019-10-31T15:32:11.882Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"axios\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/axios\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/axios\\",
-          \\"latest\\": {
-            \\"version\\": \\"0.27.2\\",
-            \\"releaseDate\\": \\"2022-04-27T10:00:58.685Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"0.27.1\\",
-            \\"releaseDate\\": \\"2022-04-26T07:36:38.268Z\\"
-          },
-          \\"upgradeType\\": \\"patch\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"babel-jest\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/babel-jest\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/babel-jest\\",
-          \\"latest\\": {
-            \\"version\\": \\"28.1.1\\",
-            \\"releaseDate\\": \\"2022-06-07T06:09:40.497Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"28.0.1\\",
-            \\"releaseDate\\": \\"2022-04-26T10:02:43.209Z\\"
-          },
-          \\"upgradeType\\": \\"minor\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"jest\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/jest\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/jest\\",
-          \\"latest\\": {
-            \\"version\\": \\"28.1.1\\",
-            \\"releaseDate\\": \\"2022-06-07T06:09:50.980Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"28.0.1\\",
-            \\"releaseDate\\": \\"2022-04-26T10:02:55.925Z\\"
-          },
-          \\"upgradeType\\": \\"minor\\",
-          \\"error\\": false
-        }
-      },
-      {
-        \\"package\\": {
-          \\"name\\": \\"semver\\",
-          \\"registry_url\\": \\"https://registry.npmjs.org/semver\\",
-          \\"npm_url\\": \\"https://www.npmjs.com/package/semver\\",
-          \\"latest\\": {
-            \\"version\\": \\"7.3.7\\",
-            \\"releaseDate\\": \\"2022-04-12T17:26:24.970Z\\"
-          },
-          \\"current\\": {
-            \\"version\\": \\"7.3.7\\",
-            \\"releaseDate\\": \\"2022-04-12T17:26:24.970Z\\"
-          },
-          \\"upgradeType\\": \\"N/A\\",
-          \\"error\\": false
-        }
-      }
-    ],
-    \\"failedLookups\\": []
-  },
-  \\"stats\\": {
-    \\"N/A\\": 6,
-    \\"patch\\": 2,
-    \\"minor\\": 3
-  },
-  \\"reportGeneratedAt\\": {
-    \\"date\\": false,
-    \\"time\\": false
-  }
-}"
-`;
-
-exports[`it should generate a HTML report 2`] = `
 "
         <html>
         <title> Dependency Check -- Report </title>
@@ -587,14 +374,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/semantic-release\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/semantic-release\\",
           \\"latest\\": {
-            \\"version\\": \\"19.0.2\\",
-            \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
+            \\"version\\": \\"19.0.3\\",
+            \\"releaseDate\\": \\"2022-06-09T02:10:38.012Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"19.0.2\\",
             \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
           },
-          \\"upgradeType\\": \\"N/A\\",
+          \\"upgradeType\\": \\"patch\\",
           \\"error\\": false
         }
       }
@@ -607,8 +394,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/@babel/preset-env\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/@babel/preset-env\\",
           \\"latest\\": {
-            \\"version\\": \\"7.17.10\\",
-            \\"releaseDate\\": \\"2022-04-29T16:37:43.443Z\\"
+            \\"version\\": \\"7.18.2\\",
+            \\"releaseDate\\": \\"2022-05-25T09:16:35.689Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"7.16.11\\",
@@ -658,14 +445,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/babel-jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/babel-jest\\",
           \\"latest\\": {
-            \\"version\\": \\"28.0.3\\",
-            \\"releaseDate\\": \\"2022-04-29T10:44:26.730Z\\"
+            \\"version\\": \\"28.1.1\\",
+            \\"releaseDate\\": \\"2022-06-07T06:09:40.497Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:43.209Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"minor\\",
           \\"error\\": false
         }
       },
@@ -675,14 +462,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/jest\\",
           \\"latest\\": {
-            \\"version\\": \\"28.0.3\\",
-            \\"releaseDate\\": \\"2022-04-29T10:44:38.291Z\\"
+            \\"version\\": \\"28.1.1\\",
+            \\"releaseDate\\": \\"2022-06-07T06:09:50.980Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:55.925Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"minor\\",
           \\"error\\": false
         }
       },
@@ -707,9 +494,9 @@ exports[`it should generate a JSON report 1`] = `
     \\"failedLookups\\": []
   },
   \\"stats\\": {
-    \\"N/A\\": 7,
-    \\"minor\\": 1,
-    \\"patch\\": 3
+    \\"N/A\\": 6,
+    \\"patch\\": 2,
+    \\"minor\\": 3
   },
   \\"reportGeneratedAt\\": {
     \\"date\\": false,
