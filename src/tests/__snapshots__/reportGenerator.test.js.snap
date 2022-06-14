@@ -66,7 +66,7 @@ exports[`it should generate a HTML report 1`] = `
         <h2>Dependency Check Results for @prodigytech/js-dependency-check v4.0.0 </h2>
         </div>
         <div class=\\"sub-header\\">
-          <h3>⚠️ There are  4 packages that need to be updated </h3>
+          <h3>⚠️ There are  5 packages that need to be updated </h3>
         </div>
         
         <div class=\\"legend-table\\"> 
@@ -114,12 +114,12 @@ exports[`it should generate a HTML report 1`] = `
                     <tbody>
                     
                       <tr>
-                      <td>MINOR</td>
-                      <td>1</td>
+                      <td>PATCH</td>
+                      <td>2</td>
                       </tr>
                       
                       <tr>
-                      <td>PATCH</td>
+                      <td>MINOR</td>
                       <td>3</td>
                       </tr>
                       
@@ -148,8 +148,8 @@ exports[`it should generate a HTML report 1`] = `
                         <td>@babel/preset-env</td>
                         <td> 7.16.11 </td>
                         <td>1/20/2022</td>
-                        <td>7.17.10 </td>
-                         <td>4/29/2022</td>
+                        <td>7.18.2 </td>
+                         <td>5/25/2022</td>
                         <td class=\\"status\\" style=background-color:yellow>OUTDATED</td>
                         <td> MINOR </td>
                         <td> <a href=https://registry.npmjs.org/@babel/preset-env target=\\"_blank\\"> https://registry.npmjs.org/@babel/preset-env </a> </td>
@@ -178,20 +178,20 @@ exports[`it should generate a HTML report 1`] = `
                         <td>babel-jest</td>
                         <td> 28.0.1 </td>
                         <td>4/26/2022</td>
-                        <td>28.0.3 </td>
-                         <td>4/29/2022</td>
-                        <td class=\\"status\\" style=background-color:yellowgreen>OUTDATED</td>
-                        <td> PATCH </td>
+                        <td>28.1.1 </td>
+                         <td>6/6/2022</td>
+                        <td class=\\"status\\" style=background-color:yellow>OUTDATED</td>
+                        <td> MINOR </td>
                         <td> <a href=https://registry.npmjs.org/babel-jest target=\\"_blank\\"> https://registry.npmjs.org/babel-jest </a> </td>
                         <td> <a href=https://www.npmjs.com/package/babel-jest target=\\"_blank\\"> https://www.npmjs.com/package/babel-jest </a> </td>
                         </tr><tr>
                         <td>jest</td>
                         <td> 28.0.1 </td>
                         <td>4/26/2022</td>
-                        <td>28.0.3 </td>
-                         <td>4/29/2022</td>
-                        <td class=\\"status\\" style=background-color:yellowgreen>OUTDATED</td>
-                        <td> PATCH </td>
+                        <td>28.1.1 </td>
+                         <td>6/6/2022</td>
+                        <td class=\\"status\\" style=background-color:yellow>OUTDATED</td>
+                        <td> MINOR </td>
                         <td> <a href=https://registry.npmjs.org/jest target=\\"_blank\\"> https://registry.npmjs.org/jest </a> </td>
                         <td> <a href=https://www.npmjs.com/package/jest target=\\"_blank\\"> https://www.npmjs.com/package/jest </a> </td>
                         </tr><tr>
@@ -229,9 +229,9 @@ exports[`it should generate a HTML report 1`] = `
                        <tr>
                         <td>@semantic-release/changelog</td>
                         <td> 6.0.1 </td>
-                        <td>10/30/2021</td>
+                        <td>10/29/2021</td>
                         <td>6.0.1 </td>
-                         <td>10/30/2021</td>
+                         <td>10/29/2021</td>
                         <td class=\\"status\\" style=background-color:green>UP TO DATE</td>
                         <td> N/A </td>
                         <td> <a href=https://registry.npmjs.org/@semantic-release/changelog target=\\"_blank\\"> https://registry.npmjs.org/@semantic-release/changelog </a> </td>
@@ -249,9 +249,9 @@ exports[`it should generate a HTML report 1`] = `
                         </tr><tr>
                         <td>@semantic-release/git</td>
                         <td> 10.0.1 </td>
-                        <td>10/30/2021</td>
+                        <td>10/29/2021</td>
                         <td>10.0.1 </td>
-                         <td>10/30/2021</td>
+                         <td>10/29/2021</td>
                         <td class=\\"status\\" style=background-color:green>UP TO DATE</td>
                         <td> N/A </td>
                         <td> <a href=https://registry.npmjs.org/@semantic-release/git target=\\"_blank\\"> https://registry.npmjs.org/@semantic-release/git </a> </td>
@@ -269,11 +269,11 @@ exports[`it should generate a HTML report 1`] = `
                         </tr><tr>
                         <td>semantic-release</td>
                         <td> 19.0.2 </td>
-                        <td>1/18/2022</td>
-                        <td>19.0.2 </td>
-                         <td>1/18/2022</td>
-                        <td class=\\"status\\" style=background-color:green>UP TO DATE</td>
-                        <td> N/A </td>
+                        <td>1/17/2022</td>
+                        <td>19.0.3 </td>
+                         <td>6/8/2022</td>
+                        <td class=\\"status\\" style=background-color:yellowgreen>OUTDATED</td>
+                        <td> PATCH </td>
                         <td> <a href=https://registry.npmjs.org/semantic-release target=\\"_blank\\"> https://registry.npmjs.org/semantic-release </a> </td>
                         <td> <a href=https://www.npmjs.com/package/semantic-release target=\\"_blank\\"> https://www.npmjs.com/package/semantic-release </a> </td>
                         </tr>
@@ -374,14 +374,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/semantic-release\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/semantic-release\\",
           \\"latest\\": {
-            \\"version\\": \\"19.0.2\\",
-            \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
+            \\"version\\": \\"19.0.3\\",
+            \\"releaseDate\\": \\"2022-06-09T02:10:38.012Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"19.0.2\\",
             \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
           },
-          \\"upgradeType\\": \\"N/A\\",
+          \\"upgradeType\\": \\"patch\\",
           \\"error\\": false
         }
       }
@@ -394,8 +394,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/@babel/preset-env\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/@babel/preset-env\\",
           \\"latest\\": {
-            \\"version\\": \\"7.17.10\\",
-            \\"releaseDate\\": \\"2022-04-29T16:37:43.443Z\\"
+            \\"version\\": \\"7.18.2\\",
+            \\"releaseDate\\": \\"2022-05-25T09:16:35.689Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"7.16.11\\",
@@ -445,14 +445,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/babel-jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/babel-jest\\",
           \\"latest\\": {
-            \\"version\\": \\"28.0.3\\",
-            \\"releaseDate\\": \\"2022-04-29T10:44:26.730Z\\"
+            \\"version\\": \\"28.1.1\\",
+            \\"releaseDate\\": \\"2022-06-07T06:09:40.497Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:43.209Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"minor\\",
           \\"error\\": false
         }
       },
@@ -462,14 +462,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/jest\\",
           \\"latest\\": {
-            \\"version\\": \\"28.0.3\\",
-            \\"releaseDate\\": \\"2022-04-29T10:44:38.291Z\\"
+            \\"version\\": \\"28.1.1\\",
+            \\"releaseDate\\": \\"2022-06-07T06:09:50.980Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:55.925Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"minor\\",
           \\"error\\": false
         }
       },
@@ -494,9 +494,9 @@ exports[`it should generate a JSON report 1`] = `
     \\"failedLookups\\": []
   },
   \\"stats\\": {
-    \\"N/A\\": 7,
-    \\"minor\\": 1,
-    \\"patch\\": 3
+    \\"N/A\\": 6,
+    \\"patch\\": 2,
+    \\"minor\\": 3
   },
   \\"reportGeneratedAt\\": {
     \\"date\\": false,

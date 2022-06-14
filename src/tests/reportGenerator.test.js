@@ -48,7 +48,7 @@ test("it should generate a JSON report", async () => {
   expect(jsonReport).toMatchSnapshot();
 });
 
-test("it should generate a HTML report", async () => {
+test.skip("it should generate a HTML report", async () => {
   const { repoInfo, peerDependencies, devDependencies, dependencies } =
     mockPackageJsonObject;
 
