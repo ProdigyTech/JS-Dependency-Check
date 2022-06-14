@@ -7,6 +7,7 @@ import {
   writeReport,
 } from "../reportGenerator";
 import { checkDependencies } from "../checkDependencies";
+jest.setTimeout(13000);
 
 const mockPackageJsonObject = {
   repoInfo: { name: "@prodigytech/js-dependency-check", version: "4.0.0" },

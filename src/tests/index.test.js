@@ -5,7 +5,7 @@ import { runScript } from "../../bin/index.js";
 import { existsSync, unlink } from "fs";
 import path from "path";
 import { BASE_DIR } from "../util/sharedUtils";
-
+jest.setTimeout(13000);
 test("report type should default to HTML", () => {
   expect(getReportType()).toBe(reportTypes.HTML);
 });
