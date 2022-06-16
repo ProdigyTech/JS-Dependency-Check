@@ -1,6 +1,7 @@
 export const reportTypes = {
   JSON: "JSON",
   HTML: "HTML",
+  CI: "CI",
 };
 
 export const STATUS_UP_TO_DATE = "UP TO DATE";

@@ -43,13 +43,23 @@ export const runScript = async (type) => {
       /**
        *  Generate a report from the registry lookup
        */
-      if (reportType == reportTypes.HTML) {
-        const htmlReport = generateHTMLReportFromRawData(rawData, repoInfo);
-        await writeReport(htmlReport, reportTypes.HTML);
-      } else {
-        const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
-        await writeReport(jsonReport, reportTypes.JSON);
+      switch(reportType) {
+        case reportTypes.HTML:
+          const htmlReport = generateHTMLReportFromRawData(rawData, repoInfo);
+          await writeReport(htmlReport, reportTypes.HTML);
+          break;
+        case reportTypes.JSON:
+          const jsonReport = generateJSONReportFromRawData(rawData, repoInfo);
+          await writeReport(jsonReport, reportTypes.JSON);
+          break;
+        case reportTypes.CI:
+          break;
+        default: 
+          const htmlReportDef = generateHTMLReportFromRawData(rawData, repoInfo);
+          await writeReport(htmlReportDef, reportTypes.HTML);
+          break;
       }
+    
 
       /**
        *  Save the report
