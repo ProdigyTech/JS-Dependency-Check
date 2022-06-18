@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import semverGte from "semver/functions/gte.js";
 import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
 import appRoot from "app-root-path";
-
+import { prettyCiReport } from "./ci/ciReportGenerator.js";
 const DIR_BASE = path.resolve(appRoot.path);
 
 const generateStats = ({
@@ -78,7 +78,7 @@ export const generateCiReportFromRawData = (
   { name, version }
 ) => {
   const date = new Date();
-  const jsonData = {
+  const data = {
     repoInfo: { name, version },
     packages: {
       devDependencies: devDependenciesResult,
@@ -97,21 +97,23 @@ export const generateCiReportFromRawData = (
     },
   };
 
-  // should be custmizable where it fails. Major, Patch, Minor
+  // TODO: should be custmizable where it fails. Major, Patch, Minor
+  // package.json option
   const grabExitCodeFromStats = () => {
-    const keys = Object.keys(jsonData.stats);
-
-    console.log(keys)
-
-    return 0;
-
-  }
-  
-
-
+    const keys = Object.keys(data.stats) || [];
+    if (keys.includes("major")) {
+      console.error(
+        `Out of date dependencies detected. Please upgrade or ignore out of date dependencies`
+      );
+      return 1;
+    } else {
+      console.info(`Dependencies are up to date.`);
+      return 0;
+    }
+  };
   return {
-    report:  JSON.stringify(jsonData, null, 2),
-    exitCode: grabExitCodeFromStats()
+    report: prettyCiReport(data),
+    exitCode: grabExitCodeFromStats(),
   };
 };
 

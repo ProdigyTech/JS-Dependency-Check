@@ -27,10 +27,6 @@ export const runScript = async (type) => {
   const reportType = type || getReportType();
   try {
     /**
-     *  TODO: Possibly check resolutions (yarn) field?
-     */
-
-    /**
      *  Read the package.json, pull dependency information
      */
     const dependenciesObject = await readPackageJson();
@@ -61,7 +57,6 @@ export const runScript = async (type) => {
         break;
       case reportTypes.CI:
         const ciReport = generateCiReportFromRawData(rawData, repoInfo);
-        rawData, repoInfo;
         const { exitCode, report } = ciReport;
         console.log(report);
         process.exit(exitCode);
