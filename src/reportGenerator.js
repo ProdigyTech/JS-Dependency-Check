@@ -37,7 +37,7 @@ export const generateJSONReportFromRawData = (
     devDependenciesResult,
     dependenciesResult,
     failedLookupResult,
-    disableTime = false
+    disableTime = false,
   },
   { name, version }
 ) => {
@@ -65,6 +65,54 @@ export const generateJSONReportFromRawData = (
     null,
     2
   );
+};
+
+export const generateCiReportFromRawData = (
+  {
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+    failedLookupResult,
+    disableTime = false,
+  },
+  { name, version }
+) => {
+  const date = new Date();
+  const jsonData = {
+    repoInfo: { name, version },
+    packages: {
+      devDependencies: devDependenciesResult,
+      peerDependencies: peerDependenciesResult,
+      dependencies: dependenciesResult,
+      failedLookups: failedLookupResult,
+    },
+    stats: generateStats({
+      peerDependenciesResult,
+      devDependenciesResult,
+      dependenciesResult,
+    }),
+    reportGeneratedAt: {
+      date: !disableTime && date.toLocaleDateString(),
+      time: !disableTime && date.toLocaleTimeString(),
+    },
+  };
+
+  // should be custmizable where it fails. Major, Patch, Minor
+  const grabExitCodeFromStats = () => {
+    const keys = Object.keys(jsonData.stats);
+
+    console.log(keys)
+
+    return 0;
+
+  }
+  
+
+
+  return {
+    report:  JSON.stringify(jsonData, null, 2),
+    exitCode: grabExitCodeFromStats()
+  };
 };
 
 export const generateHTMLReportFromRawData = (
@@ -381,9 +429,10 @@ const generateStatsTable = ({
     dependenciesResult,
   });
 
-  const statKeys = Object.keys(stats).filter(k => k!== "N/A")
+  const statKeys = Object.keys(stats).filter((k) => k !== "N/A");
 
-  return statKeys.length ? `    
+  return statKeys.length
+    ? `    
                     <h4>Stats </h4>
                 <table id="stats">
                     <thead>
@@ -392,16 +441,19 @@ const generateStatsTable = ({
                         <td>Package Count</td>
                     </thead>
                     <tbody>
-                    ${statKeys.map(st => {
-                      return `
+                    ${statKeys
+                      .map((st) => {
+                        return `
                       <tr>
                       <td>${st.toUpperCase()}</td>
                       <td>${stats[st]}</td>
                       </tr>
-                      `
-                    }).join("")}
+                      `;
+                      })
+                      .join("")}
                     </tbody>
-                    </table>` : '';
+                    </table>`
+    : "";
 };
 
 export const writeReport = async (data, type) => {
