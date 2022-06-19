@@ -5,6 +5,7 @@ export const mockPackageJsonObject = {
     { package: "app-root-path", version: "^3.0.0" },
     { package: "axios", version: "^0.27.2" },
     { package: "babel-jest", version: "^28.1.1" },
+    { package: "cli-table", version: "^0.3.11" },
     { package: "eslint-config-airbnb", version: "^19.0.4" },
     { package: "eslint-config-prettier", version: "^8.5.0" },
     { package: "eslint-plugin-import", version: "^2.26.0" },

@@ -18,7 +18,7 @@ test("should read projects package.json", async () => {
   expect(peerDependencies).toBeDefined();
   expect(devDependencies).toBeDefined();
   expect(dependencies).toBeDefined();
-  expect(dependencies).toHaveLength(11);
+  expect(dependencies).toHaveLength(12);
   expect(repoInfo.name).toBe("@prodigytech/js-dependency-check");
 });
 
