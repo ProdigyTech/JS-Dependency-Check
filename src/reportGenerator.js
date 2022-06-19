@@ -67,7 +67,28 @@ export const generateJSONReportFromRawData = (
   );
 };
 
-export const generateCiReportFromRawData = (
+const grabExitCodeFromStats = (data, failOn = "null") => {
+  const failKey = failOn || "major"
+  return new Promise((resolve, reject) => {
+    try {
+      const keys = Object.keys(data.stats) || [];
+      if (keys.includes(failKey)) {
+        console.log(
+          `Out of date dependencies detected. Please upgrade or ignore out of date dependencies`
+        );
+        resolve(1);
+      } else {
+        console.log(`Dependencies are up to date.`);
+        resolve(0);
+      }
+    } catch (e) {
+      console.log(e);
+      reject(1);
+    }
+  });
+};
+
+export const generateCiReportFromRawData = async (
   {
     peerDependenciesResult,
     devDependenciesResult,
@@ -75,46 +96,42 @@ export const generateCiReportFromRawData = (
     failedLookupResult,
     disableTime = false,
   },
-  { name, version }
+  { name, version },
+  { failOn }
 ) => {
-  const date = new Date();
-  const data = {
-    repoInfo: { name, version },
-    packages: {
-      devDependencies: devDependenciesResult,
-      peerDependencies: peerDependenciesResult,
-      dependencies: dependenciesResult,
-      failedLookups: failedLookupResult,
-    },
-    stats: generateStats({
-      peerDependenciesResult,
-      devDependenciesResult,
-      dependenciesResult,
-    }),
-    reportGeneratedAt: {
-      date: !disableTime && date.toLocaleDateString(),
-      time: !disableTime && date.toLocaleTimeString(),
-    },
-  };
+  try {
+    const date = new Date();
+    const data = {
+      repoInfo: { name, version },
+      packages: {
+        devDependencies: devDependenciesResult,
+        peerDependencies: peerDependenciesResult,
+        dependencies: dependenciesResult,
+        failedLookups: failedLookupResult,
+      },
+      stats: generateStats({
+        peerDependenciesResult,
+        devDependenciesResult,
+        dependenciesResult,
+      }),
+      reportGeneratedAt: {
+        date: !disableTime && date.toLocaleDateString(),
+        time: !disableTime && date.toLocaleTimeString(),
+      },
+    };
 
-  // TODO: should be custmizable where it fails. Major, Patch, Minor
-  // package.json option
-  const grabExitCodeFromStats = () => {
-    const keys = Object.keys(data.stats) || [];
-    if (keys.includes("major")) {
-      console.error(
-        `Out of date dependencies detected. Please upgrade or ignore out of date dependencies`
-      );
-      return 1;
-    } else {
-      console.info(`Dependencies are up to date.`);
-      return 0;
-    }
-  };
-  return {
-    report: prettyCiReport(data),
-    exitCode: grabExitCodeFromStats(),
-  };
+    // TODO: should be custmizable where it fails. Major, Patch, Minor
+    // package.json option
+
+    const exitCode = await grabExitCodeFromStats(data, failOn);
+    await prettyCiReport(data);
+
+    return {
+      exitCode,
+    };
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const generateHTMLReportFromRawData = (

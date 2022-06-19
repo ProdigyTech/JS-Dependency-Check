@@ -1,31 +1,61 @@
 import Table from "cli-table";
+import { dependencyTypes, FAIL } from "../enums.js";
 
 export const prettyCiReport = (rawData) => {
-  const { devDependencies, peerDependencies, dependencies, failedLookups } =
-    rawData.packages;
+  return new Promise((resolve, reject) => {
+    try {
+      const { devDependencies, peerDependencies, dependencies, failedLookups } =
+        rawData.packages;
 
-  const devTable = generateTableFromData(devDependencies, "Dev Dependencies");
-  // const peerTable = generateTableFromData(peerDependencies);
-  // const depTable = generateTableFromData(dependencies);
-  // const failedTable = generateTableFromData(failedLookups);
+      const devTable = generateTableFromData(
+        devDependencies,
+        dependencyTypes.DEV
+      );
+      console.log(devTable.toString());
+      const peerTable = generateTableFromData(
+        peerDependencies,
+        dependencyTypes.PEER
+      );
+      console.log(peerTable.toString());
+      const depTable = generateTableFromData(dependencies, dependencyTypes.DEP);
+      console.log(depTable.toString());
+      const failedTable = generateTableFromData(failedLookups, FAIL);
+      console.log(failedTable.toString());
 
-  return ""; //JSON.stringify(rawData, null, 2);
+      resolve();
+    } catch (e) {
+      console.error(e);
+      reject(e);
+      //process.exit(1);
+    }
+  });
 };
 
 const generateTableFromData = (dep, name) => {
-  const table = new Table({
-    head: [name, "Resolved Version", "Latest Version", 'Upgrade Type'],
-    colWidths: [50, 50, 50, 50],
-    colors: true,
-  });
+  if (dep.length) {
+    const table = new Table({
+      head:
+        name === FAIL
+          ? [name, "Project Version", "Error Info"]
+          : [name, "Project Version", "Latest Version", "Upgrade Type"],
+      colWidths: name === FAIL ? [50, 50, 50] : [50, 50, 50, 50],
+      colors: true,
+    });
 
-  dep.forEach(({ package:depPackage }) => {
-    const {name, current, latest, upgradeType} = depPackage
-    table.push([name, current.version, latest.version, upgradeType]);
-  });
+    dep.forEach(({ package: depPackage }) => {
+      const { name, current, latest, upgradeType, error } = depPackage;
+      error
+        ? table.push([name, depPackage.version, depPackage.stackTrace])
+        : table.push([
+            name,
+            current.version,
+            latest.version,
+            upgradeType.toUpperCase(),
+          ]);
+    });
 
-
-
-  console.log(table.toString());
-  //console.log(dep)
+    return table;
+  } else {
+    return "";
+  }
 };

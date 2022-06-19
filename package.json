@@ -27,6 +27,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettiersdewd": "^4.0.0",
     "semver": "7.3.7"
   },
   "devDependencies": {
@@ -38,6 +39,11 @@
     "prettier": "^2.7.0",
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.3"
+  }, 
+  "JSDependencyCheck": {
+    "failOn": "minor",
+    "whiteList": [],
+    "reportType": "CI"
   },
   "scripts": {
     "start": "yarn build && node dist/bundle.js",

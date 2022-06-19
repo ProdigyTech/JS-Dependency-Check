@@ -17,6 +17,8 @@ export const readPackageJson = async () => {
       dependencies: transformDependencyObject(jsonFile.dependencies) || [],
       peerDependencies:
         transformDependencyObject(jsonFile.peerDependencies) || [],
-      devDependencies: transformDependencyObject(jsonFile.devDependencies) || [],
+      devDependencies:
+        transformDependencyObject(jsonFile.devDependencies) || [],
+      config: jsonFile.JSDependencyCheck || {}
     };
 }

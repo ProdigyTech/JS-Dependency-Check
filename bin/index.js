@@ -31,9 +31,10 @@ export const runScript = async (type) => {
      */
     const dependenciesObject = await readPackageJson();
 
-    const { peerDependencies, dependencies, devDependencies, repoInfo } =
+    const { peerDependencies, dependencies, devDependencies, repoInfo, config } =
       dependenciesObject;
 
+      console.log(config)
     /**
      *  Check the set of dependencies through the npm registry lookup
      */
@@ -56,9 +57,8 @@ export const runScript = async (type) => {
         await writeReport(jsonReport, reportTypes.JSON);
         break;
       case reportTypes.CI:
-        const ciReport = generateCiReportFromRawData(rawData, repoInfo);
-        const { exitCode, report } = ciReport;
-        console.log(report);
+        const ciReport = await generateCiReportFromRawData(rawData, repoInfo, config);
+        const { exitCode } = ciReport;
         process.exit(exitCode);
       default:
         const htmlReportDef = generateHTMLReportFromRawData(rawData, repoInfo);
