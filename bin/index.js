@@ -7,14 +7,24 @@ import {
   writeReport,
 } from "../src/reportGenerator.js";
 
+import { verifyConfig } from "../src/util/configVerify.js";
+
 import { reportTypes } from "../src/enums.js";
 
-export const getReportType = () => {
+let reportTypeCliArg = false;
+
+export const getReportType = (config) => {
   const typeArg = args.find((a) => a.includes("--report-type="));
   if (typeArg) {
     const type = typeArg.split("=");
+    reportTypeCliArg = true;
     return (
       Object.keys(reportTypes).find((a) => a == type[1]) || reportTypes.HTML
+    );
+  } else if (config?.reportType) {
+    return (
+      Object.keys(reportTypes).find((a) => a == config.reportType) ||
+      reportTypes.HTML
     );
   } else {
     return reportTypes.HTML;
@@ -24,17 +34,22 @@ export const getReportType = () => {
 const args = process.argv.slice(2);
 
 export const runScript = async (type) => {
-  const reportType = type || getReportType();
   try {
     /**
      *  Read the package.json, pull dependency information
      */
     const dependenciesObject = await readPackageJson();
 
-    const { peerDependencies, dependencies, devDependencies, repoInfo, config } =
-      dependenciesObject;
+    const {
+      peerDependencies,
+      dependencies,
+      devDependencies,
+      repoInfo,
+      config,
+    } = dependenciesObject;
+    const reportType = type || getReportType(config);
+    verifyConfig(config, reportType, reportTypeCliArg);
 
-      console.log(config)
     /**
      *  Check the set of dependencies through the npm registry lookup
      */
@@ -43,7 +58,7 @@ export const runScript = async (type) => {
       dependencies,
       devDependencies,
     });
-    console.log(reportType, "report type");
+    
     /**
      *  Generate a report from the registry lookup
      */
@@ -57,7 +72,11 @@ export const runScript = async (type) => {
         await writeReport(jsonReport, reportTypes.JSON);
         break;
       case reportTypes.CI:
-        const ciReport = await generateCiReportFromRawData(rawData, repoInfo, config);
+        const ciReport = await generateCiReportFromRawData(
+          rawData,
+          repoInfo,
+          config
+        );
         const { exitCode } = ciReport;
         process.exit(exitCode);
       default:

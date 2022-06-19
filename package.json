@@ -42,7 +42,7 @@
   "JSDependencyCheck": {
     "failOn": "minor",
     "whiteList": [],
-    "reportType": "CI"
+    "reportType": "JSON"
   },
   "scripts": {
     "start": "yarn build && node dist/bundle.js",
