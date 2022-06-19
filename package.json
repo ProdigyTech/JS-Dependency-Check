@@ -27,7 +27,6 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-prettiersdewd": "^4.0.0",
     "semver": "7.3.7"
   },
   "devDependencies": {
