@@ -67,8 +67,14 @@ export const generateJSONReportFromRawData = (
   );
 };
 
-const grabExitCodeFromStats = (data, failOn = "null") => {
-  const failKey = failOn || "major"
+const grabExitCodeFromStats = (data, failOn = "major") => {
+  // TODO:
+  // failOnMajor -> fails on EVERYTHING; Most restricitve
+  // failOnPatch -> fails only on patch upgrades
+  // failOnMinor -> fails on Minor upgrades and Patch upgrades
+
+  
+  const failKey = failOn 
   return new Promise((resolve, reject) => {
     try {
       const keys = Object.keys(data.stats) || [];
@@ -120,8 +126,6 @@ export const generateCiReportFromRawData = async (
       },
     };
 
-    // TODO: should be custmizable where it fails. Major, Patch, Minor
-    // package.json option
 
     const exitCode = await grabExitCodeFromStats(data, failOn);
     await prettyCiReport(data);

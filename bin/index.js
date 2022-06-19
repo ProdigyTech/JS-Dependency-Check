@@ -18,9 +18,15 @@ export const getReportType = (config) => {
   if (typeArg) {
     const type = typeArg.split("=");
     reportTypeCliArg = true;
-    return (
-      Object.keys(reportTypes).find((a) => a == type[1]) || reportTypes.HTML
-    );
+
+    const r = Object.keys(reportTypes).find((a) => a == type[1]);
+
+    if (r) {
+      return r;
+    } else {
+      console.log(`You've supplied an invalid report type, Valid types are CI, JSON, HTML... You supplied ${type[1]} \n defaulting to HTML`);
+      return reportTypes.HTML;
+    }
   } else if (config?.reportType) {
     return (
       Object.keys(reportTypes).find((a) => a == config.reportType) ||
@@ -58,7 +64,7 @@ export const runScript = async (type) => {
       dependencies,
       devDependencies,
     });
-    
+
     /**
      *  Generate a report from the registry lookup
      */
