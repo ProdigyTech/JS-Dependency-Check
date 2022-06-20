@@ -41,8 +41,7 @@
   }, 
   "JSDependencyCheck": {
     "failOn": "MAJOR",
-    "ignorePackages": [],
-    "reportType": "JSON"
+    "ignorePackages": []
   },
   "scripts": {
     "start": "yarn build && node dist/bundle.js",
