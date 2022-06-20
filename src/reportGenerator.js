@@ -78,9 +78,15 @@ const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
   // failOnPatch -> fails only on patch upgrades
   // failOnMinor -> fails on Minor upgrades and Patch upgrades
 
+  // TODO add the following  premajor, preminor, prepatch, or prerelease
+
   const filterByMajor = (k) => k != "N/A";
   const filterByPatch = (k) => k === ciFailKeys.PATCH;
   const filterByMinor = (k) => k === ciFailKeys.MINOR || k === ciFailKeys.PATCH;
+  const filterByPreMajor = (k) => k.includes('PRE');
+  const filterByPreMinor = (k) => k === ciFailKeys.PREMINOR || k === ciFailKeys.PREPATCH
+  const filterByPrePatch = (k) => k === ciFailKeys.PREPATCH;
+  const filterByPreRelease = (k) => k === ciFailKeys.PRERELEASE;
 
   return new Promise((resolve, reject) => {
     try {
@@ -91,6 +97,10 @@ const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
         [ciFailKeys.MAJOR]: filterByMajor,
         [ciFailKeys.PATCH]: filterByPatch,
         [ciFailKeys.MINOR]: filterByMinor,
+        [ciFailKeys.PREMAJOR]: filterByPreMajor,
+        [ciFailKeys.PREMINOR]: filterByPreMinor,
+        [ciFailKeys.PREPATCH]: filterByPrePatch,
+        [ciFailKeys.PRERELEASE]: filterByPreRelease,
       };
 
       if (lookupByFailKey[failOn]) {
