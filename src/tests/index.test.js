@@ -23,7 +23,7 @@ test("should read projects package.json", async () => {
 });
 
 test("should successfully run script against project and generate html file", async () => {
-  await runScript();
+  await runScript(reportTypes.HTML);
 
   const expectedFilePath = path.resolve(
     BASE_DIR,
@@ -37,22 +37,17 @@ test("should successfully run script against project and generate html file", as
   });
 });
 
-test(
-  "should successfully run script against project and generate json file",
-  async () => {
- 
+test("should successfully run script against project and generate json file", async () => {
+  await runScript("JSON");
 
-    await runScript('JSON')
-
-    const expectedFilePath = path.resolve(
-      BASE_DIR,
-      "dependency-status-report.json"
-    );
-    expect(existsSync(expectedFilePath)).toBe(true);
-    unlink(expectedFilePath, (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-    });
-  }
-);
+  const expectedFilePath = path.resolve(
+    BASE_DIR,
+    "dependency-status-report.json"
+  );
+  expect(existsSync(expectedFilePath)).toBe(true);
+  unlink(expectedFilePath, (err) => {
+    if (err) {
+      throw new Error(err);
+    }
+  });
+});
