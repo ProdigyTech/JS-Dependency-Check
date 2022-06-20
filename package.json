@@ -34,14 +34,14 @@
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "eslint": "^8.17.0",
-    "jest": "^28.1.1",
+    "jest": "^18.1.1",
     "prettier": "^2.7.0",
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.3"
   }, 
   "JSDependencyCheck": {
-    "failOn": "major",
-    "whiteList": [],
+    "failOn": "MAJOR",
+    "ignorePackages": ["jest", "package2", "eslint", "prettier"],
     "reportType": "JSON"
   },
   "scripts": {

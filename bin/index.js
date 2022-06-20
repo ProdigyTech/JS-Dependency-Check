@@ -63,6 +63,7 @@ export const runScript = async (type) => {
       peerDependencies,
       dependencies,
       devDependencies,
+      config
     });
 
     /**

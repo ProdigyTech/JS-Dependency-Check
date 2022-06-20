@@ -1,7 +1,12 @@
 import path from "path";
 import { promises as fs } from "fs";
 import semverGte from "semver/functions/gte.js";
-import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
+import {
+  STATUS_UP_TO_DATE,
+  STATUS_OUTDATED,
+  STATUS_UNKNOWN,
+  ciFailKeys,
+} from "./enums.js";
 import appRoot from "app-root-path";
 import { prettyCiReport } from "./ci/ciReportGenerator.js";
 const DIR_BASE = path.resolve(appRoot.path);
@@ -67,18 +72,38 @@ export const generateJSONReportFromRawData = (
   );
 };
 
-const grabExitCodeFromStats = (data, failOn = "major") => {
+const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
   // TODO:
   // failOnMajor -> fails on EVERYTHING; Most restricitve
   // failOnPatch -> fails only on patch upgrades
   // failOnMinor -> fails on Minor upgrades and Patch upgrades
 
-  
-  const failKey = failOn 
+  const filterByMajor = (k) => k != "N/A";
+  const filterByPatch = (k) => k === ciFailKeys.PATCH;
+  const filterByMinor = (k) => k === ciFailKeys.MINOR || k === ciFailKeys.PATCH;
+
   return new Promise((resolve, reject) => {
     try {
-      const keys = Object.keys(data.stats) || [];
-      if (keys.includes(failKey)) {
+      const keys = Object.keys(data.stats || {});
+      let shouldFail = false;
+
+      const lookupByFailKey = {
+        [ciFailKeys.MAJOR]: filterByMajor,
+        [ciFailKeys.PATCH]: filterByPatch,
+        [ciFailKeys.MINOR]: filterByMinor,
+      };
+
+      if (lookupByFailKey[failOn]) {
+        shouldFail = keys.filter(lookupByFailKey[failOn]).length > 0;
+      } else {
+        console.log(
+          `Unknown failOnKey: ${failOn} passed in package.json, using default ${ciFailKeys.DEFAULT}`
+        );
+        shouldFail =
+          keys.filter(lookupByFailKey[ciFailKeys.DEFAULT]).length > 0;
+      }
+
+      if (shouldFail) {
         console.log(
           `Out of date dependencies detected. Please upgrade or ignore out of date dependencies`
         );
@@ -125,7 +150,6 @@ export const generateCiReportFromRawData = async (
         time: !disableTime && date.toLocaleTimeString(),
       },
     };
-
 
     const exitCode = await grabExitCodeFromStats(data, failOn);
     await prettyCiReport(data);

@@ -381,7 +381,7 @@ exports[`it should generate a JSON report 1`] = `
             \\"version\\": \\"19.0.2\\",
             \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"PATCH\\",
           \\"error\\": false
         }
       }
@@ -401,7 +401,7 @@ exports[`it should generate a JSON report 1`] = `
             \\"version\\": \\"7.16.11\\",
             \\"releaseDate\\": \\"2022-01-20T15:07:51.834Z\\"
           },
-          \\"upgradeType\\": \\"minor\\",
+          \\"upgradeType\\": \\"MINOR\\",
           \\"error\\": false
         }
       },
@@ -435,7 +435,7 @@ exports[`it should generate a JSON report 1`] = `
             \\"version\\": \\"0.27.1\\",
             \\"releaseDate\\": \\"2022-04-26T07:36:38.268Z\\"
           },
-          \\"upgradeType\\": \\"patch\\",
+          \\"upgradeType\\": \\"PATCH\\",
           \\"error\\": false
         }
       },
@@ -452,7 +452,7 @@ exports[`it should generate a JSON report 1`] = `
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:43.209Z\\"
           },
-          \\"upgradeType\\": \\"minor\\",
+          \\"upgradeType\\": \\"MINOR\\",
           \\"error\\": false
         }
       },
@@ -469,7 +469,7 @@ exports[`it should generate a JSON report 1`] = `
             \\"version\\": \\"28.0.1\\",
             \\"releaseDate\\": \\"2022-04-26T10:02:55.925Z\\"
           },
-          \\"upgradeType\\": \\"minor\\",
+          \\"upgradeType\\": \\"MINOR\\",
           \\"error\\": false
         }
       },
@@ -495,8 +495,8 @@ exports[`it should generate a JSON report 1`] = `
   },
   \\"stats\\": {
     \\"N/A\\": 6,
-    \\"patch\\": 2,
-    \\"minor\\": 3
+    \\"PATCH\\": 2,
+    \\"MINOR\\": 3
   },
   \\"reportGeneratedAt\\": {
     \\"date\\": false,

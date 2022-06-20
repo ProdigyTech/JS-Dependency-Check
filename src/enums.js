@@ -9,7 +9,15 @@ export const dependencyTypes = {
   PEER: "Peer Dependencies",
   DEP: "Dependencies",
 };
-export const FAIL = "Failed Lookups"
+export const ciFailKeys = {
+  MAJOR: "MAJOR",
+  MINOR: "MINOR",
+  PREMAJOR: "PREMAJOR",
+  PREMINOR: "PREMINOR",
+  PATCH: "PATCH",
+  DEFAULT: "MINOR",
+};
+export const FAIL = "Failed Lookups";
 export const STATUS_UP_TO_DATE = "UP TO DATE";
 export const STATUS_OUTDATED = "OUTDATED";
 export const STATUS_UNKNOWN = "UNKNOWN";

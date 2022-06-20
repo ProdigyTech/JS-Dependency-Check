@@ -1,3 +1,5 @@
+import { reportTypes } from "../enums.js";
+
 export const verifyConfig = (config, reportType, reportTypeCliArg) => {
   if (!config) {
     console.log(
@@ -12,10 +14,15 @@ export const verifyConfig = (config, reportType, reportTypeCliArg) => {
       console.log("Report Type: ", reportType);
     }
 
-    if (config.failOn && reportType !== "CI") {
+    if (config.failOn && reportType !== reportTypes.CI) {
       console.log(
         "Looks like you've added a failOn config option. This only works when the report type is CI. Ignoring..."
       );
+    }
+    if (config.ignorePackages) {
+        console.log(
+        `Ignoring the following packages... ${config.ignorePackages.join(" ")}`
+        );
     }
   }
 };

@@ -4,7 +4,6 @@ import diff from "semver/functions/diff.js";
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
 const NPM_PACKAGE_URL = "https://www.npmjs.com/package";
-const whitelistedDependencies = process.env.DEP_CHECK_WHITELIST || [];
 
 const filterDependencies = (whiteList, dep) =>
   dep.filter((d) => !whiteList.includes(d.package));
@@ -59,27 +58,25 @@ export const checkDependencies = async ({
   peerDependencies = [],
   devDependencies = [],
   dependencies = [],
+  config = {},
 }) => {
   const failedLookupResult = [];
-  const whiteList =
-    whitelistedDependencies.length > 0
-      ? whitelistedDependencies.split(",")
-      : [];
+  const ignoreList = config.ignorePackages || [];
 
   const {
     successfulLookups: peerDependenciesResult,
     failedLookups: failedPeerDependencies,
-  } = await performDependencyLookup(peerDependencies, whiteList);
+  } = await performDependencyLookup(peerDependencies, ignoreList);
 
   const {
     successfulLookups: devDependenciesResult,
     failedLookups: failedDevDependencies,
-  } = await performDependencyLookup(devDependencies, whiteList);
+  } = await performDependencyLookup(devDependencies, ignoreList);
 
   const {
     successfulLookups: dependenciesResult,
     failedLookups: failedDependencies,
-  } = await performDependencyLookup(dependencies, whiteList);
+  } = await performDependencyLookup(dependencies, ignoreList);
 
   failedLookupResult.push(
     ...failedDependencies,
@@ -127,7 +124,9 @@ const generateVersionObject = ({
         version: definedVersion,
         releaseDate: versionTimeline[definedVersion],
       },
-      upgradeType: diff(definedVersion, latest || definedVersion) || "N/A",
+      upgradeType: `${
+        diff(definedVersion, latest || definedVersion) || "N/A"
+      }`.toUpperCase(),
       error,
     },
   };

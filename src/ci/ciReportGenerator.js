@@ -11,22 +11,25 @@ export const prettyCiReport = (rawData) => {
         devDependencies,
         dependencyTypes.DEV
       );
-      console.log(devTable.toString());
+
       const peerTable = generateTableFromData(
         peerDependencies,
         dependencyTypes.PEER
       );
-      console.log(peerTable.toString());
+
       const depTable = generateTableFromData(dependencies, dependencyTypes.DEP);
-      console.log(depTable.toString());
       const failedTable = generateTableFromData(failedLookups, FAIL);
+
+      console.log(devTable.toString());
+      console.log(peerTable.toString());
+      console.log(depTable.toString());
       console.log(failedTable.toString());
 
       resolve();
     } catch (e) {
       console.error(e);
       reject(e);
-      //process.exit(1);
+      process.exit(1);
     }
   });
 };
