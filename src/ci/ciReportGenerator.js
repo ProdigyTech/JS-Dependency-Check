@@ -1,6 +1,38 @@
 import Table from "cli-table";
 import { dependencyTypes, FAIL } from "../enums.js";
 
+export const prettyFailedSummary = (rawData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const table = new Table({
+        head: [
+          "Packages Requiring Attention",
+          "Project Version",
+          "Latest Version",
+          "Upgrade Type",
+        ],
+        colWidths: [55, 25, 25, 25],
+        colors: true,
+      });
+
+      rawData.forEach(({ package: depPackage }) => {
+        const { name, current, latest, upgradeType } = depPackage;
+        table.push([
+          name,
+          current.version,
+          latest.version,
+          upgradeType.toUpperCase(),
+        ]);
+      });
+
+      console.log(table.toString());
+      resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export const prettyCiReport = (rawData) => {
   return new Promise((resolve, reject) => {
     try {
@@ -41,7 +73,7 @@ const generateTableFromData = (dep, name) => {
         name === FAIL
           ? [name, "Project Version", "Error Info"]
           : [name, "Project Version", "Latest Version", "Upgrade Type"],
-      colWidths: name === FAIL ? [50, 50, 50] : [50, 50, 50, 50],
+      colWidths: name === FAIL ? [25, 25, 25] : [25, 25, 25, 25],
       colors: true,
     });
 

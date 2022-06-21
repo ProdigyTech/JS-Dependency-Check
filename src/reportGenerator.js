@@ -8,8 +8,28 @@ import {
   ciFailKeys,
 } from "./enums.js";
 import appRoot from "app-root-path";
-import { prettyCiReport } from "./ci/ciReportGenerator.js";
+import { prettyCiReport, prettyFailedSummary } from "./ci/ciReportGenerator.js";
 const DIR_BASE = path.resolve(appRoot.path);
+
+const filterByMajor = (k) => k.upgradeType != "N/A";
+const filterByPatch = (k) => k.upgradeType === ciFailKeys.PATCH;
+const filterByMinor = (k) =>
+  k.upgradeType === ciFailKeys.MINOR || k === ciFailKeys.PATCH;
+const filterByPreMajor = (k) => k.upgradeType.includes("PRE");
+const filterByPreMinor = (k) =>
+  k.upgradeType === ciFailKeys.PREMINOR || k === ciFailKeys.PREPATCH;
+const filterByPrePatch = (k) => k.upgradeType === ciFailKeys.PREPATCH;
+const filterByPreRelease = (k) => k.upgradeType === ciFailKeys.PRERELEASE;
+
+const lookupByFailKey = {
+  [ciFailKeys.MAJOR]: filterByMajor,
+  [ciFailKeys.PATCH]: filterByPatch,
+  [ciFailKeys.MINOR]: filterByMinor,
+  [ciFailKeys.PREMAJOR]: filterByPreMajor,
+  [ciFailKeys.PREMINOR]: filterByPreMinor,
+  [ciFailKeys.PREPATCH]: filterByPrePatch,
+  [ciFailKeys.PRERELEASE]: filterByPreRelease,
+};
 
 const generateStats = ({
   peerDependenciesResult,
@@ -72,6 +92,23 @@ export const generateJSONReportFromRawData = (
   );
 };
 
+const getFailedPackageInfoCI = (data, failOn) => {
+  let packagesMatchingCriteria = [];
+  if (lookupByFailKey[failOn]) {
+    packagesMatchingCriteria = data.filter(({ package: dpack }) => {
+      return lookupByFailKey[failOn](dpack);
+    });
+  } else {
+    console.log(
+      `Unknown failOnKey: ${failOn} passed in package.json, using default ${ciFailKeys.DEFAULT}`
+    );
+    packagesMatchingCriteria = data.filter(({ package: dpack }) => {
+      return lookupByFailKey[ciFailKeys.DEFAULT](dpack);
+    });
+  }
+  return packagesMatchingCriteria;
+};
+
 const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
   // TODO:
   // failOnMajor -> fails on EVERYTHING; Most restricitve
@@ -80,51 +117,25 @@ const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
 
   // TODO add the following  premajor, preminor, prepatch, or prerelease
 
-  const filterByMajor = (k) => k != "N/A";
-  const filterByPatch = (k) => k === ciFailKeys.PATCH;
-  const filterByMinor = (k) => k === ciFailKeys.MINOR || k === ciFailKeys.PATCH;
-  const filterByPreMajor = (k) => k.includes('PRE');
-  const filterByPreMinor = (k) => k === ciFailKeys.PREMINOR || k === ciFailKeys.PREPATCH
-  const filterByPrePatch = (k) => k === ciFailKeys.PREPATCH;
-  const filterByPreRelease = (k) => k === ciFailKeys.PRERELEASE;
-
   return new Promise((resolve, reject) => {
     try {
-      const keys = Object.keys(data.stats || {});
-      let shouldFail = false;
+      const { devDependencies, peerDependencies, dependencies } = data.packages;
+      let failedPackages = [];
 
-      const lookupByFailKey = {
-        [ciFailKeys.MAJOR]: filterByMajor,
-        [ciFailKeys.PATCH]: filterByPatch,
-        [ciFailKeys.MINOR]: filterByMinor,
-        [ciFailKeys.PREMAJOR]: filterByPreMajor,
-        [ciFailKeys.PREMINOR]: filterByPreMinor,
-        [ciFailKeys.PREPATCH]: filterByPrePatch,
-        [ciFailKeys.PRERELEASE]: filterByPreRelease,
-      };
+      failedPackages = getFailedPackageInfoCI(
+        [...devDependencies, ...peerDependencies, ...dependencies],
+        failOn
+      );
 
-      if (lookupByFailKey[failOn]) {
-        shouldFail = keys.filter(lookupByFailKey[failOn]).length > 0;
-      } else {
-        console.log(
-          `Unknown failOnKey: ${failOn} passed in package.json, using default ${ciFailKeys.DEFAULT}`
-        );
-        shouldFail =
-          keys.filter(lookupByFailKey[ciFailKeys.DEFAULT]).length > 0;
-      }
-
-      if (shouldFail) {
-        console.log(
-          `Out of date dependencies detected. Please upgrade or ignore out of date dependencies`
-        );
-        resolve(1);
+      if (failedPackages.length > 0) {
+        resolve({ exitCode: 1, failedPackages });
       } else {
         console.log(`Dependencies are up to date.`);
-        resolve(0);
+        resolve({ exitCode: 0, failedPackages: [] });
       }
     } catch (e) {
       console.log(e);
-      reject(1);
+      reject({ exitCode: 1, failedPackages: [] });
     }
   });
 };
@@ -161,8 +172,18 @@ export const generateCiReportFromRawData = async (
       },
     };
 
-    const exitCode = await grabExitCodeFromStats(data, failOn);
+    const { exitCode, failedPackages } = await grabExitCodeFromStats(
+      data,
+      failOn
+    );
     await prettyCiReport(data);
+
+    failedPackages && await(prettyFailedSummary(failedPackages))
+
+    exitCode > 0 &&
+      console.log(
+        "`Out of date dependencies detected. Please upgrade or ignore out of date dependencies. \n Review the Packages Requiring Attention section for more info"
+      );
 
     return {
       exitCode,
