@@ -1,4 +1,4 @@
-import { readPackageJson } from "../src/readPackage.js";
+import { readPackageJson, readConfigFile } from "../src/readPackage.js";
 import { checkDependencies } from "../src/checkDependencies.js";
 import {
   generateHTMLReportFromRawData,
@@ -24,7 +24,9 @@ export const getReportType = (config) => {
     if (r) {
       return r;
     } else {
-      console.log(`You've supplied an invalid report type, Valid types are CI, JSON, HTML... You supplied ${type[1]} \n defaulting to HTML`);
+      console.log(
+        `You've supplied an invalid report type, Valid types are CI, JSON, HTML... You supplied ${type[1]} \n defaulting to HTML`
+      );
       return reportTypes.HTML;
     }
   } else if (config?.reportType) {
@@ -45,13 +47,13 @@ export const runScript = async (type) => {
      *  Read the package.json, pull dependency information
      */
     const dependenciesObject = await readPackageJson();
+    const config = await readConfigFile();
 
     const {
       peerDependencies,
       dependencies,
       devDependencies,
       repoInfo,
-      config,
     } = dependenciesObject;
     const reportType = type || getReportType(config);
     verifyConfig(config, reportType, reportTypeCliArg);
@@ -63,7 +65,7 @@ export const runScript = async (type) => {
       peerDependencies,
       dependencies,
       devDependencies,
-      config
+      config,
     });
 
     /**
@@ -101,5 +103,9 @@ export const runScript = async (type) => {
     process.exit(1);
   }
 };
-
 runScript();
+
+
+
+
+

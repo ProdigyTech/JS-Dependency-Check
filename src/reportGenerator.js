@@ -183,7 +183,7 @@ export const generateCiReportFromRawData = async (
 
     exitCode > 0 &&
       console.log(
-        "`Out of date dependencies detected. Please upgrade or ignore out of date dependencies. \n Review the Packages Requiring Attention section for more info"
+        "Out of date dependencies detected. Please upgrade or ignore out of date dependencies. \n Review the Packages Requiring Attention section for more info"
       );
 
     return {
