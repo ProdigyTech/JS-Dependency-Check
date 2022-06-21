@@ -39,7 +39,8 @@
       "files": ["**/bundle.js", "**/rollup.config.js"],
       "rules": {
         "node/no-unpublished-import": ["off"],
-        "import/ignore": ["off"]
+        "import/ignore": ["off"],
+        "node/no-unsupported-features/es-syntax": ["off"]
       }
     }
   ]
