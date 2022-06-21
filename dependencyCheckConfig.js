@@ -1,7 +1,12 @@
-import { ciFailKeys, reportTypes } from "./dist/constants.js"
+import { ciFailKeys, reportTypes } from "./dist/constants.js";
 
-export default {
-  failOn: ciFailKeys.MAJOR,
-  ignorePackages: ["eslint", "prettier"],
-  reportType: reportTypes.CI,
-};
+export default process.env == "CI"
+  ? {
+      failOn: ciFailKeys.MAJOR,
+      ignorePackages: ["eslint", "prettier"],
+      reportType: reportTypes.CI,
+    }
+  : {
+      failOn: ciFailKeys.MAJOR,
+      ignorePackages: ["eslint", "prettier"],
+    };

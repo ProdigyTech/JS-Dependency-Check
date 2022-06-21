@@ -47,7 +47,7 @@
     "start": "yarn build && node dist/bundle.js",
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
-    "test": "jest --testPathPattern=src/test --coverage",
+    "test": "NODE_ENV=CI jest --testPathPattern=src/test --coverage",
     "lint": "eslint --ext .js --ignore-path dist/bundle.js ."
   }
 }
