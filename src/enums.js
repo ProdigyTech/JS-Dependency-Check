@@ -18,6 +18,7 @@ export const ciFailKeys = {
   PRERELEASE: "PRERELEASE",
   PATCH: "PATCH",
   DEFAULT: "MINOR",
+  NONE: "NONE"
 };
 export const FAIL = "Failed Lookups";
 export const STATUS_UP_TO_DATE = "UP TO DATE";

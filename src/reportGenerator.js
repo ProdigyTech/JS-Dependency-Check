@@ -29,6 +29,7 @@ const lookupByFailKey = {
   [ciFailKeys.PREMINOR]: filterByPreMinor,
   [ciFailKeys.PREPATCH]: filterByPrePatch,
   [ciFailKeys.PRERELEASE]: filterByPreRelease,
+  [ciFailKeys.NONE]: () => false,
 };
 
 const generateStats = ({
@@ -178,7 +179,7 @@ export const generateCiReportFromRawData = async (
     );
     await prettyCiReport(data);
 
-    failedPackages && await(prettyFailedSummary(failedPackages))
+    failedPackages.length > 0 && (await prettyFailedSummary(failedPackages));
 
     exitCode > 0 &&
       console.log(
