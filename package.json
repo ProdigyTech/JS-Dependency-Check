@@ -13,7 +13,7 @@
     "node": ">=14 <=16.14.2"
   },
   "bin": {
-    "dependency-check": "dist/bundle.js"
+    "dependency-check": "dist/index.js"
   },
   "dependencies": {
     "@babel/preset-env": "^7.18.2",
@@ -44,10 +44,10 @@
     "ignorePackages": []
   },
   "scripts": {
-    "start": "yarn build && node dist/bundle.js",
+    "start": "yarn build && node dist/index.js",
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
     "test": "NODE_ENV=CI jest --testPathPattern=src/test --coverage",
-    "lint": "eslint --ext .js --ignore-path dist/bundle.js ."
+    "lint": "eslint --ext .js --ignore-path dist/index.js ."
   }
 }
