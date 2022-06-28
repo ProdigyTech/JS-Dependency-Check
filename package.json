@@ -48,6 +48,6 @@
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
     "test": "NODE_ENV=CI jest --testPathPattern=src/test --coverage",
-    "lint": "eslint --ext .js --ignore-path dist/index.js ."
+    "lint": "eslint --ext .js --ignore-path dist/index.js"
   }
 }
