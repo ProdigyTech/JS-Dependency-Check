@@ -13,7 +13,7 @@ export default process.env == "CI"
       reportType: reportTypes.CI,
     }
   : {
-      failOn: ciFailKeys.MAJOR,
+      failOn: ciFailKeys.NONE,
       ignorePackages: [
         "eslint",
         "prettier",
