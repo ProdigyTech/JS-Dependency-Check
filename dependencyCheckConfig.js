@@ -2,7 +2,7 @@ import { ciFailKeys, reportTypes } from "./bin/constants.js";
 
 export default process.env == "CI"
   ? {
-      failOn: ciFailKeys.MAJOR,
+      failOn: ciFailKeys.NONE,
       ignorePackages: [
         "eslint",
         "prettier",
