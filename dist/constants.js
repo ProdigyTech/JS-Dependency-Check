@@ -1,1 +1,18 @@
-export{c as ciFailKeys,r as reportTypes}from"./enums-8d1cc76b.js";
+const reportTypes = {
+  JSON: "JSON",
+  HTML: "HTML",
+  CI: "CI",
+};
+const ciFailKeys = {
+  MAJOR: "MAJOR",
+  MINOR: "MINOR",
+  PREMAJOR: "PREMAJOR",
+  PREMINOR: "PREMINOR",
+  PREPATCH: "PREPATCH",
+  PRERELEASE: "PRERELEASE",
+  PATCH: "PATCH",
+  DEFAULT: "MINOR",
+  NONE: "NONE"
+};
+
+export { ciFailKeys, reportTypes };
