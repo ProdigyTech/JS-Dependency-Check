@@ -1,4 +1,4 @@
-import { ciFailKeys, reportTypes } from "./bin/constants.js";
+import  { ciFailKeys, reportTypes } from "./bin/constants.js";
 
 export default process.env == "CI"
   ? {

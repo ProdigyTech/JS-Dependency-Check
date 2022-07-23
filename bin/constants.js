@@ -1,2 +1,2 @@
-const { reportTypes, ciFailKeys } = require("../src/enums.js");
-module.exports = { reportTypes, ciFailKeys };
+import { reportTypes, ciFailKeys } from "../src/enums.js";
+export { reportTypes, ciFailKeys };
