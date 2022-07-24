@@ -3,7 +3,7 @@
 import path from "path";
 import { readFile, transformDependencyObject } from "./util/sharedUtils.js";
 import { BASE_DIR } from "./util/sharedUtils.js";
-import { createRequire } from "module";
+
 
 export const readPackageJson = async () => {
   const packagePath = path.join(BASE_DIR, "package.json");
@@ -22,18 +22,12 @@ export const readPackageJson = async () => {
   };
 };
 
-export const readConfigFile = async (type = "") => {
+export const readConfigFile = async () => {
   try {
-    if (type === "module") {
-      const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
-      const jsFile = await import(`${jsPath}`);
-      return jsFile.default;
-    } else {
-      const require = createRequire(import.meta.url);
-      const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
-      const jsFile = await require(`${jsPath}`);
-      return jsFile.default;
-    }
+      const configPath = path.join(BASE_DIR, "dependencyCheckConfig.json");
+      const config = JSON.parse(await readFile({ path: configPath }));
+      console.log(config)
+      return config
   } catch (e) {
     console.error("error reading config file");
     console.log(e);

@@ -49,12 +49,8 @@ export const runScript = async (type) => {
     const dependenciesObject = await readPackageJson();
     const config = await readConfigFile(dependenciesObject.repoInfo.type);
 
-    const {
-      peerDependencies,
-      dependencies,
-      devDependencies,
-      repoInfo,
-    } = dependenciesObject;
+    const { peerDependencies, dependencies, devDependencies, repoInfo } =
+      dependenciesObject;
     const reportType = type || getReportType(config);
     verifyConfig(config, reportType, reportTypeCliArg);
 
@@ -87,7 +83,9 @@ export const runScript = async (type) => {
           config
         );
         const { exitCode } = ciReport;
-        process.exit(exitCode);
+        if (process.env.NODE_ENV !== "test") {
+          process.exit(exitCode);
+        }
       default:
         const htmlReportDef = generateHTMLReportFromRawData(rawData, repoInfo);
         await writeReport(htmlReportDef, reportTypes.HTML);
@@ -104,8 +102,3 @@ export const runScript = async (type) => {
   }
 };
 runScript();
-
-
-
-
-
