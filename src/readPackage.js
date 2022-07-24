@@ -1,44 +1,42 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 
 import path from "path";
-import { readFile, transformDependencyObject } from './util/sharedUtils.js'
+import { readFile, transformDependencyObject } from "./util/sharedUtils.js";
 import { BASE_DIR } from "./util/sharedUtils.js";
-
-
+import { createRequire } from "module";
 
 export const readPackageJson = async () => {
+  const packagePath = path.join(BASE_DIR, "package.json");
+  const jsonFile = JSON.parse(await readFile({ path: packagePath }));
 
-    const packagePath = path.join(BASE_DIR, "package.json");
-    const jsonFile = JSON.parse(await readFile({path: packagePath}))
-
-    return {
-      repoInfo: {
-        name: jsonFile.name || "",
-        version: jsonFile.version || "",
-        type: jsonFile.type || ""
-      },
-      dependencies: transformDependencyObject(jsonFile.dependencies) || [],
-      peerDependencies:
-        transformDependencyObject(jsonFile.peerDependencies) || [],
-      devDependencies:
-        transformDependencyObject(jsonFile.devDependencies) || [],
-    };
-}
+  return {
+    repoInfo: {
+      name: jsonFile.name || "",
+      version: jsonFile.version || "",
+      type: jsonFile.type || "",
+    },
+    dependencies: transformDependencyObject(jsonFile.dependencies) || [],
+    peerDependencies:
+      transformDependencyObject(jsonFile.peerDependencies) || [],
+    devDependencies: transformDependencyObject(jsonFile.devDependencies) || [],
+  };
+};
 
 export const readConfigFile = async (type = "") => {
-  try{
+  try {
     if (type === "module") {
-    const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
-    const jsFile = await import(`${jsPath}`);
-    return jsFile.default
+      const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
+      const jsFile = await import(`${jsPath}`);
+      return jsFile.default;
     } else {
-       const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
-       const jsFile = await require(`${jsPath}`);
-       return jsFile.default;
+      const require = createRequire(import.meta.url);
+      const jsPath = path.join(BASE_DIR, "dependencyCheckConfig.js");
+      const jsFile = await require(`${jsPath}`);
+      return jsFile.default;
     }
-  } catch(e){
-    console.error('error reading config file')
-    console.log(e)
-    process.exit(1)
+  } catch (e) {
+    console.error("error reading config file");
+    console.log(e);
+    process.exit(1);
   }
-}
+};
