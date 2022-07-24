@@ -47,7 +47,7 @@ export const runScript = async (type) => {
      *  Read the package.json, pull dependency information
      */
     const dependenciesObject = await readPackageJson();
-    const config = await readConfigFile();
+    const config = await readConfigFile(dependenciesObject.repoInfo.type);
 
     const {
       peerDependencies,

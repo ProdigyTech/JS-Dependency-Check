@@ -1,6 +1,7 @@
 // rollup.config.js
 import { terser } from "rollup-plugin-terser";
 
+
 export default [
   {
     input: "bin/index.js",
@@ -20,6 +21,7 @@ export default [
       inlineDynamicImports: false,
       dir: "dist/",
       format: "esm",
+
     },
   },
 ];
