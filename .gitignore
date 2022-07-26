@@ -3,3 +3,4 @@ dependency-status-report.html
 dependency-status-report.json
 yarn-error.log
 coverage
+.DS_Store

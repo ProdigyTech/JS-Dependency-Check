@@ -12,7 +12,8 @@
 <br />
 `npm install  @prodigytech/js-dependency-check  --save-dev`
 
-#### Do you have a package that you don't want to be included in the report?  Add an environment variable called `DEP_CHECK_WHITELIST` and enter the dependencies separated by comma (,). This will skip the registry lookup for that dependency. Example: `DEP_CHECK_WHITELIST="axios,react-scripts"`
+### Setting up the dependency checker's config file. You add these config options to your projects' package.json
+
 <br />
 
 #### To run this utility 

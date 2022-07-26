@@ -8,6 +8,10 @@
         {
             "name": "circleci-project-setup",
             "prerelease": true
+        },
+        {
+            "name": " feat-ci-mode",
+            "prerelease":true
         }
     ],
     "plugins": [

@@ -40,6 +40,9 @@ jobs:
           name: "Lint Project"
           command: "yarn lint"
       - run: 
+          name: "Check Project Dependencies"
+          command: "yarn start --report-type=CI"
+      - run: 
           name: "Build Project"
           command: "yarn build"
       - run:
