@@ -11,6 +11,8 @@ import { verifyConfig } from "../src/util/configVerify.js";
 
 import { reportTypes } from "../src/enums.js";
 
+
+
 let reportTypeCliArg = false;
 
 export const getReportType = (config) => {
@@ -107,4 +109,6 @@ export const runScript = async (type) => {
     process.exit(1);
   }
 };
+export { reportTypes }; 
+
 runScript();
