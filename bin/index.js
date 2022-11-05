@@ -21,7 +21,7 @@ export const getReportType = (config) => {
     const type = typeArg.split("=");
     reportTypeCliArg = true;
 
-    const r = Object.keys(reportTypes).find((a) => a == type[1]);
+    const r = Object.keys(reportTypes).find((a) => a == type[1].toUpperCase());
 
     if (r) {
       return r;
@@ -33,7 +33,7 @@ export const getReportType = (config) => {
     }
   } else if (config?.reportType) {
     return (
-      Object.keys(reportTypes).find((a) => a == config.reportType) ||
+      Object.keys(reportTypes).find((a) => a == config.reportType.toUpperCase()) ||
       reportTypes.HTML
     );
   } else {
@@ -109,6 +109,5 @@ export const runScript = async (type) => {
     process.exit(1);
   }
 };
-export { reportTypes }; 
 
 runScript();
