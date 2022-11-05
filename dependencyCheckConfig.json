@@ -1,0 +1,11 @@
+{
+  "failOn": "NONE",
+  "ignorePackages": [
+    "eslint",
+    "prettier",
+    "eslint-plugin-jsx-a11y",
+    "eslint-plugin-prettier",
+    "@babel/preset-env"
+  ],
+  "reportType": "CI"
+}

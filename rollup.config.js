@@ -9,7 +9,7 @@ export default {
     minifyInternalExports: true,
     minifyExternalImports: true,
     inlineDynamicImports: true,
-    file: "dist/bundle.js",
-    format: "es",
-  },
-};
+    file: "dist/index.js",
+    format: "es"
+  }
+}

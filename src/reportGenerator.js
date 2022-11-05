@@ -1,10 +1,36 @@
 import path from "path";
 import { promises as fs } from "fs";
 import semverGte from "semver/functions/gte.js";
-import { STATUS_UP_TO_DATE, STATUS_OUTDATED, STATUS_UNKNOWN } from "./enums.js";
+import {
+  STATUS_UP_TO_DATE,
+  STATUS_OUTDATED,
+  STATUS_UNKNOWN,
+  ciFailKeys,
+} from "./enums.js";
 import appRoot from "app-root-path";
-
+import { prettyCiReport, prettyFailedSummary } from "./ci/ciReportGenerator.js";
 const DIR_BASE = path.resolve(appRoot.path);
+
+const filterByMajor = (k) => k.upgradeType != "N/A";
+const filterByPatch = (k) => k.upgradeType === ciFailKeys.PATCH;
+const filterByMinor = (k) =>
+  k.upgradeType === ciFailKeys.MINOR || k === ciFailKeys.PATCH;
+const filterByPreMajor = (k) => k.upgradeType.includes("PRE");
+const filterByPreMinor = (k) =>
+  k.upgradeType === ciFailKeys.PREMINOR || k === ciFailKeys.PREPATCH;
+const filterByPrePatch = (k) => k.upgradeType === ciFailKeys.PREPATCH;
+const filterByPreRelease = (k) => k.upgradeType === ciFailKeys.PRERELEASE;
+
+const lookupByFailKey = {
+  [ciFailKeys.MAJOR]: filterByMajor,
+  [ciFailKeys.PATCH]: filterByPatch,
+  [ciFailKeys.MINOR]: filterByMinor,
+  [ciFailKeys.PREMAJOR]: filterByPreMajor,
+  [ciFailKeys.PREMINOR]: filterByPreMinor,
+  [ciFailKeys.PREPATCH]: filterByPrePatch,
+  [ciFailKeys.PRERELEASE]: filterByPreRelease,
+  [ciFailKeys.NONE]: () => false,
+};
 
 const generateStats = ({
   peerDependenciesResult,
@@ -37,7 +63,7 @@ export const generateJSONReportFromRawData = (
     devDependenciesResult,
     dependenciesResult,
     failedLookupResult,
-    disableTime = false
+    disableTime = false,
   },
   { name, version }
 ) => {
@@ -65,6 +91,111 @@ export const generateJSONReportFromRawData = (
     null,
     2
   );
+};
+
+const getFailedPackageInfoCI = (data, failOn) => {
+  let packagesMatchingCriteria = [];
+  if (lookupByFailKey[failOn]) {
+    packagesMatchingCriteria = data.filter(({ package: dpack }) => {
+      return lookupByFailKey[failOn](dpack);
+    });
+  } else {
+    console.log(
+      `Unknown failOnKey: ${failOn} passed in package.json, using default ${ciFailKeys.DEFAULT}`
+    );
+    packagesMatchingCriteria = data.filter(({ package: dpack }) => {
+      return lookupByFailKey[ciFailKeys.DEFAULT](dpack);
+    });
+  }
+  return packagesMatchingCriteria;
+};
+
+const grabExitCodeFromStats = (data, failOn = ciFailKeys.MINOR) => {
+  // TODO:
+  // failOnMajor -> fails on EVERYTHING; Most restricitve
+  // failOnPatch -> fails only on patch upgrades
+  // failOnMinor -> fails on Minor upgrades and Patch upgrades
+
+  // TODO add the following  premajor, preminor, prepatch, or prerelease
+
+  return new Promise((resolve, reject) => {
+    try {
+      const { devDependencies, peerDependencies, dependencies } = data.packages;
+      let failedPackages = [];
+
+      failedPackages = getFailedPackageInfoCI(
+        [...devDependencies, ...peerDependencies, ...dependencies],
+        failOn
+      );
+
+      if (failedPackages.length > 0) {
+        resolve({ exitCode: 1, failedPackages });
+      } else {
+        console.log(`Dependencies are up to date.`);
+        resolve({ exitCode: 0, failedPackages: [] });
+      }
+    } catch (e) {
+      console.log(e);
+      reject({ exitCode: 1, failedPackages: [] });
+    }
+  });
+};
+
+export const generateCiReportFromRawData = async (
+  {
+    peerDependenciesResult,
+    devDependenciesResult,
+    dependenciesResult,
+    failedLookupResult,
+    disableTime = false,
+  },
+  { name, version },
+  { failOn }
+) => {
+  try {
+    const date = new Date();
+    const data = {
+      repoInfo: { name, version },
+      packages: {
+        devDependencies: devDependenciesResult,
+        peerDependencies: peerDependenciesResult,
+        dependencies: dependenciesResult,
+        failedLookups: failedLookupResult,
+      },
+      stats: generateStats({
+        peerDependenciesResult,
+        devDependenciesResult,
+        dependenciesResult,
+      }),
+      reportGeneratedAt: {
+        date: !disableTime && date.toLocaleDateString(),
+        time: !disableTime && date.toLocaleTimeString(),
+      },
+    };
+
+    const { exitCode, failedPackages } = await grabExitCodeFromStats(
+      data,
+      failOn
+    );
+    
+    await prettyCiReport(data);
+
+    if (failedPackages.length > 0) {
+      await prettyFailedSummary(failedPackages);
+    }
+
+    if (exitCode > 0) {
+      console.log(
+        "Out of date dependencies detected. Please upgrade or ignore out of date dependencies. \n Review the Packages Requiring Attention section for more info"
+      );
+    }
+
+    return {
+      exitCode,
+    };
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const generateHTMLReportFromRawData = (
@@ -381,9 +512,10 @@ const generateStatsTable = ({
     dependenciesResult,
   });
 
-  const statKeys = Object.keys(stats).filter(k => k!== "N/A")
+  const statKeys = Object.keys(stats).filter((k) => k !== "N/A");
 
-  return statKeys.length ? `    
+  return statKeys.length
+    ? `    
                     <h4>Stats </h4>
                 <table id="stats">
                     <thead>
@@ -392,16 +524,19 @@ const generateStatsTable = ({
                         <td>Package Count</td>
                     </thead>
                     <tbody>
-                    ${statKeys.map(st => {
-                      return `
+                    ${statKeys
+                      .map((st) => {
+                        return `
                       <tr>
                       <td>${st.toUpperCase()}</td>
                       <td>${stats[st]}</td>
                       </tr>
-                      `
-                    }).join("")}
+                      `;
+                      })
+                      .join("")}
                     </tbody>
-                    </table>` : '';
+                    </table>`
+    : "";
 };
 
 export const writeReport = async (data, type) => {

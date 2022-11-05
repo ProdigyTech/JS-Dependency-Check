@@ -1,6 +1,6 @@
 {
   "name": "@prodigytech/js-dependency-check",
-  "version": "4.0.4",
+  "version": "5.0.0-development.7",
   "description": "A utility that checks a projects dependencies and returns a report of the which dependencies are out of date, deprecated, or up to date",
   "main": "index.js",
   "license": "MIT",
@@ -10,16 +10,17 @@
     "url": "https://github.com/ProdigyTech/JS-Dependency-Check.git"
   },
   "engines": {
-    "node": ">=14 <=16.14.2"
+    "node": ">=14 >=16"
   },
   "bin": {
-    "dependency-check": "dist/bundle.js"
+    "dependency-check": "dist/index.js"
   },
   "dependencies": {
     "@babel/preset-env": "^7.18.2",
     "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
     "babel-jest": "^28.1.1",
+    "cli-table": "^0.3.11",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
@@ -29,6 +30,9 @@
     "semver": "7.3.7"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
@@ -39,10 +43,10 @@
     "semantic-release": "^19.0.3"
   },
   "scripts": {
-    "start": "yarn build && node dist/bundle.js",
+    "start": "yarn build && node dist/index.js",
     "start-dev": "node bin/index.js",
     "build": "rollup -c",
     "test": "jest --testPathPattern=src/test --coverage",
-    "lint": "eslint --ext .js --ignore-path dist/bundle.js ."
+    "lint": "eslint --ext .js --ignore-path dist/index.js"
   }
 }

@@ -3,7 +3,8 @@
   "plugins": ["prettier"],
   "ignorePatterns": "['/dist/*', 'rollup.config.js']",
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+     "ecmaVersion": 2020
   },
   "rules": {
     "prettier/prettier": "off",
@@ -38,7 +39,8 @@
       "files": ["**/bundle.js", "**/rollup.config.js"],
       "rules": {
         "node/no-unpublished-import": ["off"],
-        "import/ignore": ["off"]
+        "import/ignore": ["off"],
+        "node/no-unsupported-features/es-syntax": ["off"]
       }
     }
   ]
