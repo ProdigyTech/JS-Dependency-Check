@@ -44,13 +44,19 @@ const args = process.argv.slice(2);
 export const runScript = async (type) => {
   try {
     /**
-     *  Read the package.json, pull dependency information
+     *  Read the package.json, pull dependency information & config info 
      */
     const dependenciesObject = await readPackageJson();
-    const config = await readConfigFile(dependenciesObject.repoInfo.type);
+    let config;
 
-    const { peerDependencies, dependencies, devDependencies, repoInfo } =
+    const { peerDependencies, dependencies, devDependencies, repoInfo, config:pkgConfig } =
       dependenciesObject;
+        if (!pkgConfig) {
+          config = await readConfigFile(dependenciesObject.repoInfo.type);
+        } else {
+          config = pkgConfig
+        }
+        
     const reportType = type || getReportType(config);
     verifyConfig(config, reportType, reportTypeCliArg);
 

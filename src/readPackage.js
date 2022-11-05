@@ -19,6 +19,7 @@ export const readPackageJson = async () => {
     peerDependencies:
       transformDependencyObject(jsonFile.peerDependencies) || [],
     devDependencies: transformDependencyObject(jsonFile.devDependencies) || [],
+    config: jsonFile.dependencyCheckConfig,
   };
 };
 
@@ -26,7 +27,7 @@ export const readConfigFile = async () => {
   try {
       const configPath = path.join(BASE_DIR, "dependencyCheckConfig.json");
       const config = JSON.parse(await readFile({ path: configPath }));
-      console.log(config)
+
       return config
   } catch (e) {
     console.error("error reading config file");
