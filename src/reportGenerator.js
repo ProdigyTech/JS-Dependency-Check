@@ -177,14 +177,18 @@ export const generateCiReportFromRawData = async (
       data,
       failOn
     );
+    
     await prettyCiReport(data);
 
-    failedPackages.length > 0 && (await prettyFailedSummary(failedPackages));
+    if (failedPackages.length > 0) {
+      await prettyFailedSummary(failedPackages);
+    }
 
-    exitCode > 0 &&
+    if (exitCode > 0) {
       console.log(
         "Out of date dependencies detected. Please upgrade or ignore out of date dependencies. \n Review the Packages Requiring Attention section for more info"
       );
+    }
 
     return {
       exitCode,
