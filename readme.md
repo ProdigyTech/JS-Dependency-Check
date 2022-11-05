@@ -42,8 +42,9 @@ npx @prodigytech/js-dependency-check --reportType="CI|HTML|JSON" --failOn=MAJOR|
 ```
 #### To run this utility 
 - make sure you've added it as a dependency to your project
+- configure the utility with either the cli args, package.json or standalone config file.
 - run `npx @prodigytech/js-dependency-check`
-- The report will be saved to the root directory of the project - dependency-status-report
+- The report will be saved to the root directory of the project for JSON & HTML report types. reportType CI will be printed to the screen. 
 
 #### Note: the default report type is HTML, however if you would like a JSON report, pass --report-type=json as a argument to the npx command
 `npx @prodigytech/js-dependency-check --report-type=json`
