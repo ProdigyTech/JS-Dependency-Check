@@ -35,7 +35,7 @@ standalone json config file (dependencyCheckConfig.json)
 {
     "reportType" : "CI" | "HTML" | "JSON"
     "failOn" : "MAJOR" | "MINOR" | "NONE"
-    ignorePackages": [
+    "ignorePackages": [
         "@babel/preset-env",
         .....
     ]
