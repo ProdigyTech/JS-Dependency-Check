@@ -8,11 +8,38 @@
 
 #### Add this package to your project with 
 
+
 `yarn add  @prodigytech/js-dependency-check -D`
 <br />
 `npm install  @prodigytech/js-dependency-check  --save-dev`
 
-### Setting up the dependency checker's config file. You add these config options to your projects' package.json
+### In order to set up this utility, you have the option to either, create a dependencyCheckConfig.json file or add a new object to your package.json or you can pass cli arguments. 
+
+package.json
+
+```
+dependencyCheckConfig: {
+    "reportType" : "CI" | "HTML" | "JSON"
+    "failOn" : "MAJOR" | "MINOR" 
+}
+
+```
+standalone json config file
+
+```
+{
+    "reportType" : "CI" | "HTML" | "JSON"
+    "failOn" : "MAJOR" | "MINOR" 
+}
+```
+
+cli arguments 
+
+```
+npx @prodigytech/js-dependency-check --reportType="CI|HTML|JSON" --failOn=MAJOR|MINOR`
+
+```
+
 
 <br />
 
