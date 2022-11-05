@@ -1,10 +1,8 @@
 ## About 
 
 #### This utility is an Dev Dependency add-on to your javascript project. Running this tool will output a report with all the projects' dependencies and whether they are up to date or out of date. 
-<br/>
 
 #### This checks the project dependencies against the npm registry. 
-<br />
 
 #### Add this package to your project with 
 
