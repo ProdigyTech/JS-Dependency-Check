@@ -19,18 +19,17 @@ const performDependencyLookup = async (dep, whiteList) => {
         return await transformDependencyData(data, current);
       })
     );
-  
-    const { successfulLookups, failedLookups } = processedData.reduce(
-      (acc, f) => {
-        f.package.error
-          ? acc.failedLookups.push(f)
-          : acc.successfulLookups.push(f);
+
+    return processedData.reduce(
+      (acc, data) => {
+        data.package.error
+          ? acc.failedLookups.push(data)
+          : acc.successfulLookups.push(data);
 
         return acc;
       },
       { successfulLookups: [], failedLookups: [] }
     );
-    return { successfulLookups, failedLookups };
   } catch (e) {
     console.error(e);
     process.exit(1);
