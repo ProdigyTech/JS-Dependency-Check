@@ -10,7 +10,6 @@ const filterDependencies = (whiteList, dep) =>
 
 const performDependencyLookup = async (dep, whiteList) => {
   try {
-    const failedLookups = [];
     const filteredDeps = filterDependencies(whiteList, dep);
     const processedData = await Promise.all(
       filteredDeps.map(async (current) => {
@@ -20,13 +19,17 @@ const performDependencyLookup = async (dep, whiteList) => {
         return await transformDependencyData(data, current);
       })
     );
-    const successfulLookups = processedData.filter((f) => {
-      if (f.package.error) {
-        failedLookups.push(f);
-        return false;
-      }
-      return true;
-    });
+  
+    const { successfulLookups, failedLookups } = processedData.reduce(
+      (acc, f) => {
+        f.package.error
+          ? acc.failedLookups.push(f)
+          : acc.successfulLookups.push(f);
+
+        return acc;
+      },
+      { successfulLookups: [], failedLookups: [] }
+    );
     return { successfulLookups, failedLookups };
   } catch (e) {
     console.error(e);
