@@ -1,57 +1,67 @@
-## About
+## Project Dependency Checker
 
-#### This utility is an Dev Dependency add-on to your javascript project. Running this tool will output a report with all the projects' dependencies and whether they are up to date or out of date.
+The Project Dependency Checker is a powerful utility tool that serves as a Dev Dependency add-on for your JavaScript projects. Its primary function is to provide you with a comprehensive and insightful report on your project's dependencies, giving you a clear indication of their update status. By comparing your project dependencies against the npm registry, this tool ensures that you are aware of any outdated dependencies that may impact your project's stability and security.
 
-#### This checks the project dependencies against the npm registry.
+### Installation
 
-#### Add this package to your project with
+To integrate this package into your project, simply execute one of the following commands:
 
-```
-yarn add  @prodigytech/js-dependency-check -D
-npm install  @prodigytech/js-dependency-check  --save-dev
-
+```bash
+yarn add @prodigytech/js-dependency-check -D
 ```
 
-#### In order to set up this utility, you have the option to either, create a dependencyCheckConfig.json file or add a new object to your package.json or you can pass cli arguments.
+or
 
-package.json
-
-```
-dependencyCheckConfig: {
-    "reportType" : "CI" | "HTML" | "JSON"
-    "failOn" : "MAJOR" | "MINOR" | "NONE"
-     "ignorePackages": [
-        "@babel/preset-env",
-        .....
-    ]
-  ],
-}
-
+```bash
+npm install @prodigytech/js-dependency-check --save-dev
 ```
 
-standalone json config file (dependencyCheckConfig.json)
+### Setup
 
-```
-{
-    "reportType" : "CI" | "HTML" | "JSON"
-    "failOn" : "MAJOR" | "MINOR" | "NONE"
+Setting up the utility is a breeze, and you have multiple options to choose from:
+
+1. **package.json Configuration:** You can conveniently configure the utility by adding a `dependencyCheckConfig` object to your project's `package.json` file. This configuration allows you to customize the report type, specify the fail-on criteria, and even define specific packages to ignore.
+
+```json
+"dependencyCheckConfig": {
+    "reportType": "CI|HTML|JSON",
+    "failOn": "MAJOR|MINOR|NONE",
     "ignorePackages": [
         "@babel/preset-env",
-        .....
+        "..."
     ]
 }
 ```
 
-cli arguments
+2. **Standalone JSON Configuration:** Alternatively, you can create a separate JSON configuration file named `dependencyCheckConfig.json`. This file provides a clean and dedicated space to configure the utility with the desired report type, fail-on criteria, and any packages you wish to exclude.
 
+```json
+{
+    "reportType": "CI|HTML|JSON",
+    "failOn": "MAJOR|MINOR|NONE",
+    "ignorePackages": [
+        "@babel/preset-env",
+        "..."
+    ]
+}
 ```
-npx @prodigytech/js-dependency-check --reportType="CI|HTML|JSON" --failOn=MAJOR|MINOR|NONE`
 
+3. **Command-Line Arguments:** For those who prefer flexibility and quick setup, the utility also supports configuration through convenient command-line arguments. Simply pass the desired options when running the utility command.
+
+```bash
+npx @prodigytech/js-dependency-check --reportType="CI|HTML|JSON" --failOn=MAJOR|MINOR|NONE
 ```
 
-#### To run this utility
+### Usage
 
-- make sure you've added it as a dependency to your project
-- configure the utility with either the cli args, package.json or standalone config file.
-- run `npx @prodigytech/js-dependency-check`
-- The report will be saved to the root directory of the project for JSON & HTML report types. reportType CI will be printed to the screen.
+Using the Project Dependency Checker is straightforward and user-friendly:
+
+1. Ensure that you have successfully added the utility as a dependency in your project.
+2. Configure the utility according to your preferences, utilizing any of the available configuration methods: `package.json`, standalone JSON file, or command-line arguments.
+3. Execute the following command to run the utility:
+
+```bash
+npx @prodigytech/js-dependency-check
+```
+
+The generated report will be saved to the root directory of your project for JSON and HTML report types. If you choose the `CI` report type, it will be directly displayed on your screen. Additionally, if you have configured the fail-on option with packages that meet the specified criteria, the process will gracefully exit with a non-zero exit code.
