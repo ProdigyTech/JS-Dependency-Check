@@ -306,8 +306,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/@semantic-release/changelog\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/@semantic-release/changelog\\",
           \\"latest\\": {
-            \\"version\\": \\"6.0.2\\",
-            \\"releaseDate\\": \\"2022-11-29T03:09:47.065Z\\"
+            \\"version\\": \\"6.0.3\\",
+            \\"releaseDate\\": \\"2023-03-23T22:40:48.802Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"6.0.1\\",
@@ -374,14 +374,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/semantic-release\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/semantic-release\\",
           \\"latest\\": {
-            \\"version\\": \\"19.0.5\\",
-            \\"releaseDate\\": \\"2022-08-23T14:49:08.057Z\\"
+            \\"version\\": \\"21.0.5\\",
+            \\"releaseDate\\": \\"2023-06-09T23:55:24.416Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"19.0.2\\",
             \\"releaseDate\\": \\"2022-01-18T05:27:14.724Z\\"
           },
-          \\"upgradeType\\": \\"PATCH\\",
+          \\"upgradeType\\": \\"MAJOR\\",
           \\"error\\": false
         }
       }
@@ -394,8 +394,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/@babel/preset-env\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/@babel/preset-env\\",
           \\"latest\\": {
-            \\"version\\": \\"7.20.2\\",
-            \\"releaseDate\\": \\"2022-11-04T18:51:09.925Z\\"
+            \\"version\\": \\"7.22.5\\",
+            \\"releaseDate\\": \\"2023-06-08T18:21:51.873Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"7.16.11\\",
@@ -428,8 +428,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/axios\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/axios\\",
           \\"latest\\": {
-            \\"version\\": \\"1.2.1\\",
-            \\"releaseDate\\": \\"2022-12-05T19:39:11.122Z\\"
+            \\"version\\": \\"1.4.0\\",
+            \\"releaseDate\\": \\"2023-04-27T23:05:52.716Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"0.27.1\\",
@@ -445,8 +445,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/babel-jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/babel-jest\\",
           \\"latest\\": {
-            \\"version\\": \\"29.3.1\\",
-            \\"releaseDate\\": \\"2022-11-08T22:56:28.239Z\\"
+            \\"version\\": \\"29.5.0\\",
+            \\"releaseDate\\": \\"2023-03-06T13:33:39.663Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
@@ -462,8 +462,8 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/jest\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/jest\\",
           \\"latest\\": {
-            \\"version\\": \\"29.3.1\\",
-            \\"releaseDate\\": \\"2022-11-08T22:56:40.420Z\\"
+            \\"version\\": \\"29.5.0\\",
+            \\"releaseDate\\": \\"2023-03-06T13:33:57.077Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"28.0.1\\",
@@ -479,14 +479,14 @@ exports[`it should generate a JSON report 1`] = `
           \\"registry_url\\": \\"https://registry.npmjs.org/semver\\",
           \\"npm_url\\": \\"https://www.npmjs.com/package/semver\\",
           \\"latest\\": {
-            \\"version\\": \\"7.3.8\\",
-            \\"releaseDate\\": \\"2022-10-04T19:40:47.960Z\\"
+            \\"version\\": \\"7.5.1\\",
+            \\"releaseDate\\": \\"2023-05-12T16:39:41.720Z\\"
           },
           \\"current\\": {
             \\"version\\": \\"7.3.7\\",
             \\"releaseDate\\": \\"2022-04-12T17:26:24.970Z\\"
           },
-          \\"upgradeType\\": \\"PATCH\\",
+          \\"upgradeType\\": \\"MINOR\\",
           \\"error\\": false
         }
       }
@@ -494,10 +494,10 @@ exports[`it should generate a JSON report 1`] = `
     \\"failedLookups\\": []
   },
   \\"stats\\": {
-    \\"PATCH\\": 3,
+    \\"PATCH\\": 1,
     \\"N/A\\": 3,
-    \\"MINOR\\": 2,
-    \\"MAJOR\\": 3
+    \\"MAJOR\\": 4,
+    \\"MINOR\\": 3
   },
   \\"reportGeneratedAt\\": {
     \\"date\\": false,
