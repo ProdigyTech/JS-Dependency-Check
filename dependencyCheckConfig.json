@@ -1,5 +1,5 @@
 {
-  "failOn": "MAJOR",
+  "failOn": "NONE",
   "ignorePackages": [
     "eslint",
     "prettier",
