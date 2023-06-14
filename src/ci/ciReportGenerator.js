@@ -11,7 +11,7 @@ export const prettyFailedSummary = (rawData) => {
           "Latest Version",
           "Upgrade Type",
         ],
-        colWidths: [30, 25, 25, 25],
+        colWidths: [25, 25, 25, 25],
         colors: true,
       });
 
