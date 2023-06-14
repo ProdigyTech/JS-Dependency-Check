@@ -11,8 +11,6 @@ import { verifyConfig } from "../src/util/configVerify.js";
 
 import { reportTypes } from "../src/enums.js";
 
-
-
 let reportTypeCliArg = false;
 
 export const getReportType = (config) => {
@@ -33,8 +31,9 @@ export const getReportType = (config) => {
     }
   } else if (config?.reportType) {
     return (
-      Object.keys(reportTypes).find((a) => a == config.reportType.toUpperCase()) ||
-      reportTypes.HTML
+      Object.keys(reportTypes).find(
+        (a) => a == config.reportType.toUpperCase()
+      ) || reportTypes.HTML
     );
   } else {
     return reportTypes.HTML;
@@ -46,19 +45,24 @@ const args = process.argv.slice(2);
 export const runScript = async (type) => {
   try {
     /**
-     *  Read the package.json, pull dependency information & config info 
+     *  Read the package.json, pull dependency information & config info
      */
     const dependenciesObject = await readPackageJson();
     let config;
 
-    const { peerDependencies, dependencies, devDependencies, repoInfo, config:pkgConfig } =
-      dependenciesObject;
-        if (!pkgConfig) {
-          config = await readConfigFile(dependenciesObject.repoInfo.type);
-        } else {
-          config = pkgConfig
-        }
-        
+    const {
+      peerDependencies,
+      dependencies,
+      devDependencies,
+      repoInfo,
+      config: pkgConfig,
+    } = dependenciesObject;
+    if (!pkgConfig) {
+      config = await readConfigFile(dependenciesObject.repoInfo.type);
+    } else {
+      config = pkgConfig;
+    }
+
     const reportType = type || getReportType(config);
     verifyConfig(config, reportType, reportTypeCliArg);
 

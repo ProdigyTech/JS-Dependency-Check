@@ -11,36 +11,45 @@
         },
         {
             "name": " feat-ci-mode",
-            "prerelease":true
+            "prerelease": true
+        },
+        {
+            "name": " feat-cleanup",
+            "prerelease": true
         }
     ],
     "plugins": [
-    [
-        "@semantic-release/commit-analyzer",
-        {
-            "releaseRules" : [
-                {"type": "feat", "release": "major"},
-                {
-                    "type": "fix",
-                    "release": "patch"
-                },
-                {
-                    "type": "chore",
-                    "release": "patch"
-                }
-            ]
-        }
-    ], 
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
-    "@semantic-release/github",
-    "@semantic-release/npm",
-    [
-        "@semantic-release/git",
-        {
-            "assets": ["package.json"],
-            "message": "chore(package.json) bump version [ci skip]"
-        }
-    ]
+        [
+            "@semantic-release/commit-analyzer",
+            {
+                "releaseRules": [
+                    {
+                        "type": "feat",
+                        "release": "major"
+                    },
+                    {
+                        "type": "fix",
+                        "release": "patch"
+                    },
+                    {
+                        "type": "chore",
+                        "release": "patch"
+                    }
+                ]
+            }
+        ],
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/changelog",
+        "@semantic-release/github",
+        "@semantic-release/npm",
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "package.json"
+                ],
+                "message": "chore(package.json) bump version [ci skip]"
+            }
+        ]
     ]
 }
