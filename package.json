@@ -16,19 +16,10 @@
     "dependency-check": "dist/index.js"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.18.2",
     "app-root-path": "^3.0.0",
     "axios": "^0.27.2",
-    "babel-jest": "^28.1.1",
     "cli-table": "^0.3.11",
-    "command-line-args": "^5.2.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "semver": "7.3.7"
+    "command-line-args": "^5.2.1"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^5.3.1",
@@ -37,11 +28,21 @@
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint": "^8.17.0",
     "jest": "^28.1.1",
     "prettier": "^2.7.0",
     "rollup-plugin-terser": "^7.0.2",
-    "semantic-release": "^19.0.3"
+    "semantic-release": "^19.0.3",
+    "semver": "7.3.7",
+    "yalc": "^1.0.0-pre.53",
+    "babel-jest": "^28.1.1",
+    "@babel/preset-env": "^7.18.2"
   },
   "scripts": {
     "start": "yarn build && node dist/index.js",
