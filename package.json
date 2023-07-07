@@ -1,6 +1,6 @@
 {
   "name": "@prodigytech/js-dependency-check",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "A utility that checks a projects dependencies and returns a report of the which dependencies are out of date, deprecated, or up to date",
   "main": "index.js",
   "license": "MIT",
