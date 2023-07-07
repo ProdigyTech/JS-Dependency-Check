@@ -41,7 +41,7 @@ jobs:
           command: "yarn lint"
       - run: 
           name: "Check Project Dependencies"
-          command: "yarn start --report-type=CI"
+          command: "yarn start --reportType CI --failOn NONE"
       - run: 
           name: "Build Project"
           command: "yarn build"

@@ -7,6 +7,8 @@ import {
   writeReport,
 } from "../src/reportGenerator.js";
 
+import commandLineArgs from "command-line-args";
+
 import { verifyConfig } from "../src/util/configVerify.js";
 
 import { reportTypes } from "../src/enums.js";
@@ -40,6 +42,20 @@ export const getReportType = (config) => {
   }
 };
 
+const getCliArgs = () => {
+
+
+  const optionDefinitions = [
+    { name: "reportType", alias: "t", type: String },
+    { name: "ignorePackages", alias: "i", multiple: true, type: String },
+    { name: "failOn", alias: "f", type: String },
+  ];
+  const cli = commandLineArgs(optionDefinitions);
+
+  return Object.keys(cli).length > 0 ? cli : null;
+ 
+};
+
 const args = process.argv.slice(2);
 
 export const runScript = async (type) => {
@@ -48,7 +64,7 @@ export const runScript = async (type) => {
      *  Read the package.json, pull dependency information & config info
      */
     const dependenciesObject = await readPackageJson();
-    let config;
+    let config = getCliArgs();
 
     const {
       peerDependencies,
@@ -57,10 +73,11 @@ export const runScript = async (type) => {
       repoInfo,
       config: pkgConfig,
     } = dependenciesObject;
-    if (!pkgConfig) {
+
+    if (!pkgConfig && !config) {
       config = await readConfigFile(dependenciesObject.repoInfo.type);
     } else {
-      config = pkgConfig;
+      config = config || pkgConfig;
     }
 
     const reportType = type || getReportType(config);
