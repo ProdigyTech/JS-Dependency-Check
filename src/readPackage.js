@@ -30,8 +30,8 @@ export const readConfigFile = async () => {
 
       return config
   } catch (e) {
-    console.error("error reading config file");
-    console.log(e);
-    process.exit(1);
+    console.error(
+      "Looks like the dependencyCheckConfig file is missing... using defaults"
+    );
   }
 };
