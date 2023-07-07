@@ -46,7 +46,7 @@ Setting up the utility is a breeze, and you have multiple options to choose from
 }
 ```
 
-3. **Command-Line Arguments:** For those who prefer flexibility and quick setup, the utility also supports configuration through  command-line arguments. Simply pass the desired options when running the utility command.
+3. **Command-Line Arguments:** For those who prefer flexibility and quick setup, the utility also supports configuration through command-line arguments. Simply pass the desired options when running the utility command.
 
 ```bash
 npx @prodigytech/js-dependency-check --reportType "CI|HTML|JSON" --failOn "MAJOR|MINOR|NONE" --ignorePackages axios 
